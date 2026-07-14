@@ -184,6 +184,25 @@
     .metric-card .number { font-size: 2.5rem; font-weight: 300; color: var(--navy); letter-spacing: -0.96px; }
     .metric-card .label { font-size: 0.88rem; color: var(--slate); margin-top: 4px; }
 
+    /* Proof / ROI */
+    .roi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 32px; }
+    .roi-card { text-align: center; padding: 32px 24px; }
+    .roi-card .roi-label { font-size: 0.81rem; font-weight: 500; color: var(--slate); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; }
+    .roi-card .roi-amount { font-size: 2.5rem; font-weight: 300; color: var(--navy); letter-spacing: -0.96px; font-family: 'Source Code Pro', monospace; }
+    .roi-card .roi-sub { font-size: 0.81rem; color: var(--slate); margin-bottom: 16px; }
+    .roi-card ul { list-style: none; text-align: left; }
+    .roi-card li { padding: 6px 0; font-size: 0.81rem; border-bottom: 1px solid var(--border); }
+    .roi-card li:last-child { border-bottom: none; }
+    .roi-card li::before { content: ''; }
+    .roi-cost li::before { content: '— '; color: var(--slate); }
+    .roi-save li::before { content: '✓ '; color: var(--success); font-weight: 500; }
+    .roi-return li::before { content: '↑ '; color: var(--purple); font-weight: 500; }
+    .testimonial { background: var(--brand-dark); color: var(--white); border-radius: var(--radius-lg); padding: 48px; text-align: center; }
+    .testimonial blockquote { font-size: 1.38rem; font-weight: 300; line-height: 1.5; letter-spacing: -0.22px; max-width: 720px; margin: 0 auto 16px; }
+    .testimonial blockquote::before { content: '\201C'; }
+    .testimonial blockquote::after { content: '\201D'; }
+    .testimonial .attribution { font-size: 0.88rem; opacity: 0.8; }
+
     /* Add-ons table */
     .addon-table { width: 100%; border-collapse: collapse; margin-bottom: 48px; }
     .addon-table th, .addon-table td { text-align: left; padding: 12px 16px; border-bottom: 1px solid var(--border); }
@@ -222,6 +241,7 @@
       .nav-links { display: none; flex-direction: column; position: absolute; top: 100%; left: 0; right: 0; background: rgba(255,255,255,0.98); backdrop-filter: blur(12px); padding: 16px 24px; border-bottom: 1px solid var(--border); gap: 12px; }
       .nav-links.mobile-open { display: flex; }
       .results-grid { grid-template-columns: repeat(2, 1fr); }
+      .roi-grid { grid-template-columns: 1fr; }
       .btn { padding: 10px 20px; min-height: 44px; }
       .icp-table, .addon-table { display: block; overflow-x: auto; }
       h3 { font-size: 1.25rem; }
@@ -475,6 +495,63 @@
       </div>
     </div>
     <p style="text-align:center;margin-top:24px;font-size:0.88rem;">Triage went from 10–15 minutes per lead to under 1 minute. That's what your agents do.</p>
+  </div>
+</section>
+
+<!-- Proof -->
+<section style="background: rgba(83,58,253,0.02);">
+  <div class="container">
+    <div class="section-header">
+      <h2>The Math</h2>
+      <p>What you pay vs. what you get back. Annualized for a typical $5M service business.</p>
+    </div>
+
+    <div class="roi-grid">
+      <div class="card roi-card roi-cost">
+        <div class="roi-label">What You Pay</div>
+        <div class="roi-amount mono">$57,000</div>
+        <div class="roi-sub">Year 1 total (Tier 2 Standard)</div>
+        <ul>
+          <li>$15,000 one-time onboarding</li>
+          <li>$3,500/month × 12 months</li>
+          <li>5–8 agents across your operation</li>
+          <li>Hosting, model costs, support included</li>
+        </ul>
+      </div>
+      <div class="card roi-card roi-save">
+        <div class="roi-label">What You Save</div>
+        <div class="roi-amount mono">$108,000</div>
+        <div class="roi-sub">Annual cost recovery</div>
+        <ul>
+          <li>1 admin hire you don't need: $45,000–$55,000</li>
+          <li>Owner time reclaimed (10 hrs/wk @ $100/hr): $52,000</li>
+          <li>Leads that don't fall through cracks: $11,000+</li>
+        </ul>
+      </div>
+      <div class="card roi-card roi-return" style="border-color: var(--purple-light); box-shadow: var(--shadow-blue) 0px 30px 45px -30px, var(--shadow-black) 0px 18px 36px -18px, 0 0 0 1px var(--purple-light);">
+        <div class="roi-label">Your Return</div>
+        <div class="roi-amount" style="color: var(--purple);">+$51,000</div>
+        <div class="roi-sub">Net positive in Year 1</div>
+        <ul>
+          <li>Pays for itself in 6.3 months</li>
+          <li>Year 2: $42,000/year (recurring only)</li>
+          <li>Year 2 net return: +$66,000</li>
+          <li>5-year cumulative return: +$279,000</li>
+        </ul>
+      </div>
+    </div>
+
+    <p style="text-align:center;margin-top:32px;font-size:0.88rem;color:var(--slate);">Numbers based on a $5M HVAC/plumbing business. Your actual return depends on your workflows and volume. We model this on the discovery call.</p>
+
+    <div class="testimonial" style="margin-top:48px;">
+      <blockquote>We run this system ourselves. 604 emails sent. 500 delivered. 54 opens. 4 qualified discovery calls booked — automatically. The same infrastructure your agents run on. We don't sell what we don't use.</blockquote>
+      <div class="attribution">Malwa Asset Firm — Lead Triage System, July 2026</div>
+    </div>
+
+    <div class="guarantee" style="margin-top:32px; text-align:center; padding:32px; border:1px solid var(--border); border-radius:var(--radius-lg);">
+      <h3 style="margin-bottom:8px;">14-Day Guarantee</h3>
+      <p style="max-width:600px;margin:0 auto;font-size:0.88rem;">If your first agent isn't live in production within 14 days of kickoff, you don't pay the onboarding fee. We only get paid when we deliver.</p>
+    </div>
   </div>
 </section>
 

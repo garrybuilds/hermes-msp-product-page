@@ -148,9 +148,14 @@
     .pricing-card .price-monthly { font-size: 1.13rem; color: var(--slate); margin-bottom: 4px; }
     .pricing-card .price-total { font-size: 0.81rem; color: var(--slate); margin-bottom: 20px; }
     .pricing-card ul { list-style: none; text-align: left; margin-bottom: 24px; }
-    .pricing-card li { padding: 6px 0; font-size: 0.88rem; border-bottom: 1px solid var(--border); }
+    .pricing-card li { padding: 6px 0; font-size: 0.88rem; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
     .pricing-card li:last-child { border-bottom: none; }
-    .pricing-card li::before { content: '✓ '; color: var(--success); font-weight: 500; }
+    .pricing-card li::before { content: '✓ '; color: var(--success); font-weight: 500; flex-shrink: 0; }
+    .pricing-card .item-value { font-size: 0.75rem; color: var(--purple); font-weight: 400; white-space: nowrap; text-align: right; }
+    .pricing-card .total-value { margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--purple-light); text-align: center; }
+    .pricing-card .total-value .tv-label { font-size: 0.75rem; font-weight: 500; color: var(--slate); text-transform: uppercase; letter-spacing: 0.5px; }
+    .pricing-card .total-value .tv-amount { font-size: 1.38rem; font-weight: 300; color: var(--purple); letter-spacing: -0.22px; font-family: 'Source Code Pro', monospace; }
+    .pricing-card .total-value .tv-net { font-size: 0.81rem; color: var(--success-text); margin-top: 2px; }
 
     .founding-block {
       background: linear-gradient(135deg, var(--brand-dark), #2e2b8c);
@@ -368,12 +373,17 @@
         <div class="price-monthly">one-time + $1,500/month</div>
         <div class="price-total mono">12-month total: $25,500</div>
         <ul>
-          <li>1–3 Hermes agents (lead triage, follow-up, scheduling)</li>
-          <li>Standard model tier</li>
-          <li>Business-hours support (M–F 9–6 ET)</li>
-          <li>Usage dashboard</li>
-          <li>Monthly 30-min review call</li>
+          <li><span>1–3 Hermes agents (lead triage, follow-up, scheduling)</span><span class="item-value">$25K–$50K</span></li>
+          <li><span>Standard model tier</span><span class="item-value">$6,000</span></li>
+          <li><span>Business-hours support (M–F 9–6 ET)</span><span class="item-value">$8,000</span></li>
+          <li><span>Usage dashboard</span><span class="item-value">$3,000</span></li>
+          <li><span>Monthly 30-min review call</span><span class="item-value">$4,800</span></li>
         </ul>
+        <div class="total-value">
+          <div class="tv-label">Annual Value</div>
+          <div class="tv-amount">~$55,000</div>
+          <div class="tv-net">Net return: +$29,500/year</div>
+        </div>
         <a href="https://cal.com/malwa-asset-firm/maf-intro-meeting" class="btn btn-primary" style="width:100%">Book a Discovery Call →</a>
       </div>
 
@@ -386,13 +396,18 @@
         <div class="price-monthly">one-time + $3,500/month</div>
         <div class="price-total mono">12-month total: $57,000</div>
         <ul>
-          <li>5–8 Hermes agents across core operations</li>
-          <li>Lead triage, scheduling, invoicing, follow-up, review generation</li>
-          <li>Better model tier</li>
-          <li>Priority support (1-hr response, M–F 7am–8pm ET)</li>
-          <li>Dedicated usage dashboard with 1.5x ceiling</li>
-          <li>Quarterly optimization review</li>
+          <li><span>5–8 Hermes agents across core operations</span><span class="item-value">$75K–$120K</span></li>
+          <li><span>Lead triage, scheduling, invoicing, follow-up, review generation</span><span class="item-value">$35,000</span></li>
+          <li><span>Better model tier</span><span class="item-value">$12,000</span></li>
+          <li><span>Priority support (1-hr response, M–F 7am–8pm ET)</span><span class="item-value">$15,000</span></li>
+          <li><span>Dedicated usage dashboard with 1.5x ceiling</span><span class="item-value">$5,000</span></li>
+          <li><span>Quarterly optimization review</span><span class="item-value">$9,600</span></li>
         </ul>
+        <div class="total-value">
+          <div class="tv-label">Annual Value</div>
+          <div class="tv-amount">~$108,000</div>
+          <div class="tv-net">Net return: +$51,000/year</div>
+        </div>
         <a href="https://cal.com/malwa-asset-firm/maf-intro-meeting" class="btn btn-primary" style="width:100%">Book a Discovery Call →</a>
       </div>
 
@@ -404,15 +419,20 @@
         <div class="price-monthly">one-time + $12,000/month</div>
         <div class="price-total mono">12-month total: $179,000</div>
         <ul>
-          <li>10+ Hermes agents across full operation</li>
-          <li>Top-tier model</li>
-          <li>Dedicated CSM (named, 1:1)</li>
-          <li>24/7/365 SLA (15-min P1 response, 4-hr P1 resolution)</li>
-          <li>Dedicated Slack/Teams channel</li>
-          <li>Quarterly 90-min optimization review</li>
-          <li>Annual executive review with Garry</li>
-          <li>One full data export/year</li>
+          <li><span>10+ Hermes agents across full operation</span><span class="item-value">$150K–$250K</span></li>
+          <li><span>Top-tier model</span><span class="item-value">$24,000</span></li>
+          <li><span>Dedicated CSM (named, 1:1)</span><span class="item-value">$30,000</span></li>
+          <li><span>24/7/365 SLA (15-min P1 response, 4-hr P1 resolution)</span><span class="item-value">$40,000</span></li>
+          <li><span>Dedicated Slack/Teams channel</span><span class="item-value">$8,000</span></li>
+          <li><span>Quarterly 90-min optimization review</span><span class="item-value">$14,400</span></li>
+          <li><span>Annual executive review with Garry</span><span class="item-value">$5,000</span></li>
+          <li><span>One full data export/year</span><span class="item-value">$3,000</span></li>
         </ul>
+        <div class="total-value">
+          <div class="tv-label">Annual Value</div>
+          <div class="tv-amount">~$275,000</div>
+          <div class="tv-net">Net return: +$96,000/year</div>
+        </div>
         <a href="https://cal.com/malwa-asset-firm/maf-intro-meeting" class="btn btn-primary" style="width:100%">Book a Discovery Call →</a>
       </div>
     </div>

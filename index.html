@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hermes MSP — Your AI Operations Department | Malwa Asset Firm</title>
+  <meta name="description" content="Managed AI agents for service businesses. We build it. We run it. You grow. 14 days from kickoff to your first agent live in production.">
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600&family=Source+Code+Pro:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%23533afd'/><text x='50%25' y='55%25' dominant-baseline='middle' text-anchor='middle' fill='white' font-family='system-ui' font-size='18' font-weight='600'>H</text></svg>">
+  <style>
+    :root {
+      --purple: #533afd;
+      --purple-hover: #4434d4;
+      --purple-light: #b9b9f9;
+      --navy: #061b31;
+      --slate: #64748d;
+      --label: #273951;
+      --white: #ffffff;
+      --border: #e5edf5;
+      --brand-dark: #1c1e54;
+      --success: #15be53;
+      --success-text: #108c3d;
+      --shadow-blue: rgba(50,50,93,0.25);
+      --shadow-black: rgba(0,0,0,0.1);
+      --shadow-ambient: rgba(23,23,23,0.08);
+      --radius: 6px;
+      --radius-sm: 4px;
+      --radius-lg: 8px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Source Sans 3', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+      font-weight: 300;
+      font-size: 16px;
+      line-height: 1.4;
+      color: var(--slate);
+      background: var(--white);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Typography */
+    h1, h2, h3, h4 { font-weight: 300; color: var(--navy); }
+    h1 { font-size: 3.5rem; line-height: 1.03; letter-spacing: -1.4px; }
+    h2 { font-size: 2rem; line-height: 1.1; letter-spacing: -0.64px; }
+    h3 { font-size: 1.38rem; line-height: 1.1; letter-spacing: -0.22px; }
+    h4 { font-size: 1.13rem; line-height: 1.4; letter-spacing: normal; font-weight: 300; }
+
+    .mono { font-family: 'Source Code Pro', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; }
+
+    /* Layout */
+    .container { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+    section { padding: 96px 0; }
+
+    /* Navigation */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    nav .container {
+      display: flex; align-items: center; justify-content: space-between;
+      padding-top: 16px; padding-bottom: 16px;
+    }
+    .nav-logo { font-size: 1.13rem; font-weight: 500; color: var(--navy); letter-spacing: -0.22px; }
+    .nav-links { display: flex; gap: 24px; align-items: center; }
+    .nav-links a { font-size: 0.88rem; font-weight: 400; color: var(--navy); text-decoration: none; }
+    .nav-links a:hover { color: var(--purple); }
+    .hamburger { display: none; background: none; border: none; cursor: pointer; padding: 8px; }
+    .hamburger span { display: block; width: 24px; height: 2px; background: var(--navy); margin: 5px 0; transition: 0.2s; }
+    .hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px,5px); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px,-5px); }
+
+    /* Buttons */
+    .btn {
+      display: inline-block; padding: 8px 16px; border-radius: var(--radius-sm);
+      font-size: 1rem; font-weight: 400; text-decoration: none; cursor: pointer;
+      transition: background 0.15s, box-shadow 0.15s;
+    }
+    .btn-primary { background: var(--purple); color: var(--white); }
+    .btn-primary:hover { background: var(--purple-hover); }
+    .btn-ghost { background: transparent; color: var(--purple); border: 1px solid var(--purple-light); }
+    .btn-ghost:hover { background: rgba(83,58,253,0.05); }
+    .btn-nav { font-size: 0.88rem; padding: 6px 14px; }
+
+    /* Cards */
+    .card {
+      background: var(--white); border: 1px solid var(--border); border-radius: var(--radius);
+      box-shadow: var(--shadow-blue) 0px 30px 45px -30px, var(--shadow-black) 0px 18px 36px -18px;
+      padding: 32px;
+    }
+    .card-highlight {
+      border-color: var(--purple-light);
+      box-shadow: var(--shadow-blue) 0px 30px 45px -30px, var(--shadow-black) 0px 18px 36px -18px, 0 0 0 1px var(--purple-light);
+    }
+
+    /* Hero */
+    .hero { padding: 120px 0 80px; text-align: center; }
+    .hero h1 { margin-bottom: 16px; }
+    .hero p { font-size: 1.13rem; line-height: 1.4; max-width: 640px; margin: 0 auto 32px; }
+    .hero .ctas { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .trust-bar {
+      margin-top: 48px; padding: 16px 24px;
+      background: rgba(83,58,253,0.04); border-radius: var(--radius-lg);
+      font-size: 0.88rem; font-weight: 400; color: var(--label);
+    }
+
+    /* Section headers */
+    .section-header { text-align: center; margin-bottom: 64px; }
+    .section-header h2 { margin-bottom: 12px; }
+    .section-header p { font-size: 1.13rem; max-width: 600px; margin: 0 auto; }
+
+    /* Grids */
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+
+    /* Pipeline */
+    .pipeline { display: flex; gap: 0; align-items: flex-start; justify-content: center; }
+    .pipeline-step {
+      flex: 1; text-align: center; padding: 24px 16px; position: relative;
+    }
+    .pipeline-step::after {
+      content: '→'; position: absolute; right: -8px; top: 50%;
+      transform: translateY(-50%); font-size: 1.5rem; color: var(--purple-light);
+    }
+    .pipeline-step:last-child::after { display: none; }
+    .pipeline-num {
+      width: 40px; height: 40px; border-radius: var(--radius-sm);
+      background: var(--purple); color: var(--white);
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 12px; font-size: 0.88rem; font-weight: 500;
+    }
+    .pipeline-step h4 { margin-bottom: 4px; }
+    .pipeline-step .timeline { font-size: 0.75rem; color: var(--purple); font-weight: 500; margin-top: 4px; }
+
+    /* Pricing */
+    .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 32px; }
+    .pricing-card { text-align: center; display: flex; flex-direction: column; }
+    .pricing-card .btn { margin-top: auto; }
+    .pricing-card .tier-name { font-size: 1.13rem; font-weight: 500; color: var(--navy); margin-bottom: 4px; }
+    .pricing-card .tier-revenue { font-size: 0.81rem; color: var(--slate); margin-bottom: 20px; }
+    .pricing-card .price-onetime { font-size: 2rem; font-weight: 300; color: var(--navy); letter-spacing: -0.64px; font-family: 'Source Code Pro', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; }
+    .pricing-card .price-monthly { font-size: 1.13rem; color: var(--slate); margin-bottom: 4px; }
+    .pricing-card .price-total { font-size: 0.81rem; color: var(--slate); margin-bottom: 20px; }
+    .pricing-card ul { list-style: none; text-align: left; margin-bottom: 24px; }
+    .pricing-card li { padding: 6px 0; font-size: 0.88rem; border-bottom: 1px solid var(--border); }
+    .pricing-card li:last-child { border-bottom: none; }
+    .pricing-card li::before { content: '✓ '; color: var(--success); font-weight: 500; }
+
+    .founding-block {
+      background: linear-gradient(135deg, var(--brand-dark), #2e2b8c);
+      color: var(--white); border-radius: var(--radius-lg); padding: 40px;
+      text-align: center; margin-bottom: 48px;
+    }
+    .founding-block h3 { color: var(--white); margin-bottom: 8px; }
+    .founding-block .price { font-size: 2rem; font-weight: 300; margin-bottom: 4px; }
+    .founding-block .savings { font-size: 0.88rem; opacity: 0.8; margin-bottom: 16px; }
+    .founding-block p { font-size: 0.88rem; opacity: 0.85; max-width: 500px; margin: 0 auto 20px; }
+    .founding-block .btn { background: var(--white); color: var(--brand-dark); }
+    .founding-block .btn:hover { background: rgba(255,255,255,0.9); }
+
+    /* Always included */
+    .included-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 48px; }
+    .included-item { padding: 16px; border: 1px solid var(--border); border-radius: var(--radius-sm); }
+    .included-item h4 { margin-bottom: 4px; }
+    .included-item p { font-size: 0.88rem; }
+
+    /* ICP table */
+    .icp-table { width: 100%; border-collapse: collapse; margin-bottom: 24px; }
+    .icp-table th, .icp-table td { text-align: left; padding: 12px 16px; border-bottom: 1px solid var(--border); }
+    .icp-table th { font-weight: 500; color: var(--navy); font-size: 0.88rem; }
+    .icp-table td { font-size: 0.88rem; }
+    .not-fit { background: rgba(234,34,97,0.05); border-radius: var(--radius-sm); padding: 16px; margin-top: 16px; }
+    .not-fit strong { color: #ea2261; }
+
+    /* Results */
+    .results-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 24px; }
+    .metric-card { text-align: center; padding: 24px; }
+    .metric-card .number { font-size: 2.5rem; font-weight: 300; color: var(--navy); letter-spacing: -0.96px; }
+    .metric-card .label { font-size: 0.88rem; color: var(--slate); margin-top: 4px; }
+
+    /* Add-ons table */
+    .addon-table { width: 100%; border-collapse: collapse; margin-bottom: 48px; }
+    .addon-table th, .addon-table td { text-align: left; padding: 12px 16px; border-bottom: 1px solid var(--border); }
+    .addon-table th { font-weight: 500; color: var(--navy); font-size: 0.88rem; }
+    .addon-table td { font-size: 0.88rem; }
+    .addon-table .price-col { text-align: right; font-family: 'Source Code Pro', monospace; }
+
+    /* Contract */
+    .contract-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+    .contract-item { padding: 16px; border: 1px solid var(--border); border-radius: var(--radius-sm); }
+    .contract-item h4 { margin-bottom: 4px; }
+    .contract-item p { font-size: 0.88rem; }
+
+    /* Footer CTA */
+    .footer-cta { background: var(--brand-dark); color: var(--white); text-align: center; padding: 80px 0; }
+    .footer-cta h2 { color: var(--white); margin-bottom: 12px; }
+    .footer-cta p { font-size: 1.13rem; opacity: 0.8; max-width: 500px; margin: 0 auto 24px; }
+    .footer-cta .btn { background: var(--white); color: var(--brand-dark); font-size: 1.13rem; padding: 12px 28px; }
+    .footer-cta .btn:hover { background: rgba(255,255,255,0.9); }
+    .footer-contact { margin-top: 32px; font-size: 0.88rem; opacity: 0.7; }
+    .footer-contact a { color: var(--white); }
+
+    footer { padding: 32px 0; text-align: center; font-size: 0.81rem; color: var(--slate); }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      h1 { font-size: 2rem; letter-spacing: -0.64px; }
+      h2 { font-size: 1.5rem; letter-spacing: -0.26px; }
+      section { padding: 64px 0; }
+      .hero { padding: 80px 0 48px; }
+      .grid-3, .pricing-grid { grid-template-columns: 1fr; }
+      .grid-2, .included-grid, .results-grid, .contract-grid { grid-template-columns: 1fr; }
+      .pipeline { flex-direction: column; }
+      .pipeline-step::after { content: '↓'; right: 50%; top: auto; bottom: -4px; transform: translateX(50%); }
+      .hamburger { display: block; }
+      .nav-links { display: none; flex-direction: column; position: absolute; top: 100%; left: 0; right: 0; background: rgba(255,255,255,0.98); backdrop-filter: blur(12px); padding: 16px 24px; border-bottom: 1px solid var(--border); gap: 12px; }
+      .nav-links.mobile-open { display: flex; }
+      .results-grid { grid-template-columns: repeat(2, 1fr); }
+      .btn { padding: 10px 20px; min-height: 44px; }
+      .icp-table, .addon-table { display: block; overflow-x: auto; }
+      h3 { font-size: 1.25rem; }
+      h4 { font-size: 1rem; }
+    }
+
+    @media (max-width: 480px) {
+      .results-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav>
+  <div class="container">
+    <div class="nav-logo">Hermes MSP</div>
+    <button class="hamburger" onclick="this.classList.toggle('open');document.querySelector('.nav-links').classList.toggle('mobile-open')" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links">
+      <a href="#how-it-works">How It Works</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#who-for">Who It's For</a>
+      <a href="https://cal.com/malwa-asset-firm/maf-intro-meeting" class="btn btn-primary btn-nav">Book a Call</a>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="container">
+    <h1>Your AI Operations Department</h1>
+    <p>Managed AI agents for service businesses. We build it. We run it. You grow.</p>
+    <div class="ctas">
+      <a href="https://cal.com/malwa-asset-firm/maf-intro-meeting" class="btn btn-primary">Book a Discovery Call →</a>
+      <a href="#pricing" class="btn btn-ghost">See Pricing ↓</a>
+    </div>
+    <div class="trust-bar">
+      14 days from kickoff to your first agent live in production.
+    </div>
+  </div>
+</section>
+
+<!-- What Is Hermes MSP -->
+<section>
+  <div class="container">
+    <div class="section-header">
+      <h2>What Is Hermes MSP?</h2>
+      <p>Hermes MSP is a managed AI operations service for service-based SMBs. We deploy custom AI agents that handle your scheduling, dispatch, invoicing, follow-ups, lead triage, and customer communication — then we host, monitor, and support them 24/7.</p>
+    </div>
+    <div class="grid-3">
+      <div class="card">
+        <h3>We Build It</h3>
+        <p>Custom AI agents configured to your workflows — prompts, voice, rules, integrations. Built and live in 14 days.</p>
+      </div>
+      <div class="card">
+        <h3>We Run It</h3>
+        <p>Cloud hosting, uptime, scaling, model costs, bug fixes, security patches. You get a private AI operations layer. We run the infrastructure.</p>
+      </div>
+      <div class="card">
+        <h3>You Grow</h3>
+        <p>No hiring. No building. No maintenance. Your team focuses on revenue while AI handles the operational workflows that eat hours nobody bills for.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- How It Works -->
+<section id="how-it-works" style="background: rgba(83,58,253,0.02);">
+  <div class="container">
+    <div class="section-header">
+      <h2>How It Works</h2>
+    </div>
+    <div class="pipeline">
+      <div class="pipeline-step">
+        <div class="pipeline-num">1</div>
+        <h4>Discovery Call</h4>
+        <p>We map your workflows and identify the highest-impact automation targets.</p>
+        <div class="timeline">Week 1</div>
+      </div>
+      <div class="pipeline-step">
+        <div class="pipeline-num">2</div>
+        <h4>Agent Build</h4>
+        <p>We configure Hermes agents for your business — prompts, voice, rules, integrations.</p>
+        <div class="timeline">Week 1–2</div>
+      </div>
+      <div class="pipeline-step">
+        <div class="pipeline-num">3</div>
+        <h4>Testing</h4>
+        <p>Agents run in shadow mode. You review. We tune.</p>
+        <div class="timeline">Week 3</div>
+      </div>
+      <div class="pipeline-step">
+        <div class="pipeline-num">4</div>
+        <h4>Go-Live</h4>
+        <p>Agents go live handling real workflows. Your team trained.</p>
+        <div class="timeline">Week 4</div>
+      </div>
+      <div class="pipeline-step">
+        <div class="pipeline-num">5</div>
+        <h4>Ongoing</h4>
+        <p>We host, monitor, update, and support. Monthly review calls.</p>
+        <div class="timeline">Month 2+</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Pricing -->
+<section id="pricing">
+  <div class="container">
+    <div class="section-header">
+      <h2>Pricing</h2>
+      <p>One-time onboarding + monthly service fee. 12-month minimum. All tiers include hosting, model costs, support, and a monthly review call.</p>
+    </div>
+
+    <div class="pricing-grid">
+      <!-- Tier 1 -->
+      <div class="card pricing-card">
+        <div class="tier-name">Tier 1 — Light</div>
+        <div class="tier-revenue">For $1M–$3M revenue businesses</div>
+        <div class="price-onetime">$7,500</div>
+        <div class="price-monthly">one-time + $1,500/month</div>
+        <div class="price-total mono">12-month total: $25,500</div>
+        <ul>
+          <li>1–3 Hermes agents (lead triage, follow-up, scheduling)</li>
+          <li>Standard model tier</li>
+          <li>Business-hours support (M–F 9–6 ET)</li>
+          <li>Usage dashboard</li>
+          <li>Monthly 30-min review call</li>
+        </ul>
+        <a href="https://cal.com/malwa-asset-firm/maf-intro-meeting" class="btn btn-primary" style="width:100%">Book a Discovery Call →</a>
+      </div>
+
+      <!-- Tier 2 — Highlighted -->
+      <div class="card card-highlight pricing-card" style="position:relative;">
+        <div style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--purple);color:var(--white);padding:4px 16px;border-radius:var(--radius-sm);font-size:0.75rem;font-weight:500;">RECOMMENDED</div>
+        <div class="tier-name">Tier 2 — Standard</div>
+        <div class="tier-revenue">For $3M–$10M revenue businesses</div>
+        <div class="price-onetime">$15,000</div>
+        <div class="price-monthly">one-time + $3,500/month</div>
+        <div class="price-total mono">12-month total: $57,000</div>
+        <ul>
+          <li>5–8 Hermes agents across core operations</li>
+          <li>Lead triage, scheduling, invoicing, follow-up, review generation</li>
+          <li>Better model tier</li>
+          <li>Priority support (1-hr response, M–F 7am–8pm ET)</li>
+          <li>Dedicated usage dashboard with 1.5x ceiling</li>
+          <li>Quarterly optimization review</li>
+        </ul>
+        <a href="https://cal.com/malwa-asset-firm/maf-intro-meeting" class="btn btn-primary" style="width:100%">Book a Discovery Call →</a>
+      </div>
+
+      <!-- Tier 3 -->
+      <div class="card pricing-card">
+        <div class="tier-name">Tier 3 — Premium</div>
+        <div class="tier-revenue">For $10M–$25M revenue businesses</div>
+        <div class="price-onetime">$35,000</div>
+        <div class="price-monthly">one-time + $12,000/month</div>
+        <div class="price-total mono">12-month total: $179,000</div>
+        <ul>
+          <li>10+ Hermes agents across full operation</li>
+          <li>Top-tier model</li>
+          <li>Dedicated CSM (named, 1:1)</li>
+          <li>24/7/365 SLA (15-min P1 response, 4-hr P1 resolution)</li>
+          <li>Dedicated Slack/Teams channel</li>
+          <li>Quarterly 90-min optimization review</li>
+          <li>Annual executive review with Garry</li>
+          <li>One full data export/year</li>
+        </ul>
+        <a href="https://cal.com/malwa-asset-firm/maf-intro-meeting" class="btn btn-primary" style="width:100%">Book a Discovery Call →</a>
+      </div>
+    </div>
+
+    <!-- Founding Client Block -->
+    <div class="founding-block">
+      <h3>Founding Client Block — Tier 3 Only</h3>
+      <div class="price">$25,000 one-time + $8,000/month</div>
+      <div class="savings mono">12-month total: $121,000 (save $58,000 vs standard T3)</div>
+      <p>Everything in Tier 3, at a locked discount. <strong>First 3 clients only.</strong> In exchange: one 60-min case study interview, one written testimonial, and up to 2 reference calls per quarter. Locked pricing for the full 12-month term.</p>
+      <a href="https://cal.com/malwa-asset-firm/maf-intro-meeting" class="btn">Book a Discovery Call →</a>
+    </div>
+
+    <!-- What's Always Included -->
+    <h3 style="text-align:center;margin-bottom:24px;">What's Always Included</h3>
+    <div class="included-grid">
+      <div class="included-item"><h4>Private Hermes Agent Deployment</h4><p>Configured to your workflows — prompts, voice, rules, integrations.</p></div>
+      <div class="included-item"><h4>Cloud Hosting, Uptime & Scaling</h4><p>We run the infrastructure. You get the results.</p></div>
+      <div class="included-item"><h4>LLM Model Costs</h4><p>Tracked and reported monthly. No surprise bills.</p></div>
+      <div class="included-item"><h4>Bug Fixes, Model Updates & Security Patches</h4><p>Your agents stay current without your team touching anything.</p></div>
+      <div class="included-item"><h4>Usage Dashboard</h4><p>See your usage and costs in real time.</p></div>
+      <div class="included-item"><h4>Monthly 30-Min Review Call</h4><p>Optimization recommendations based on real data.</p></div>
+    </div>
+
+    <!-- What's NOT Included -->
+    <h3 style="text-align:center;margin-bottom:16px;">What's NOT Included</h3>
+    <p style="text-align:center;max-width:600px;margin:0 auto 48px;font-size:0.88rem;">
+      Hardware · Voice/phone minutes · Third-party SaaS subscriptions (Brevo, Twilio, CRM seats, SMS, domain, Google Workspace) · Marketing spend · Legal or accounting services · Custom on-prem deployments (cloud-only)
+    </p>
+  </div>
+</section>
+
+<!-- Who This Is For -->
+<section id="who-for" style="background: rgba(83,58,253,0.02);">
+  <div class="container">
+    <div class="section-header">
+      <h2>Who This Is For</h2>
+      <p>Hermes MSP is built for service-based SMBs — HVAC, plumbing, electrical, mechanical, mobile services, contractors, and field-service businesses.</p>
+    </div>
+    <table class="icp-table">
+      <tr><th scope="col">Attribute</th><th scope="col">Target</th></tr>
+      <tr><td>Revenue</td><td>$1M–$25M annual</td></tr>
+      <tr><td>Team</td><td>Owner-operator or small leadership team</td></tr>
+      <tr><td>Pain</td><td>Spending too much on admin and labor. Wants AI leverage without building it themselves.</td></tr>
+      <tr><td>Mindset</td><td>Forward-thinking. Ready to let AI handle operational workflows.</td></tr>
+    </table>
+    <div class="not-fit">
+      <strong>Not a fit:</strong> Sub-$1M revenue (no budget), $25M+ (wants in-house AI team), pure e-commerce/digital (different stack).
+    </div>
+  </div>
+</section>
+
+<!-- Real Results -->
+<section>
+  <div class="container">
+    <div class="section-header">
+      <h2>Real Results</h2>
+      <p>Our own lead triage and routing workflow — the same system your agents run on.</p>
+    </div>
+    <div class="results-grid">
+      <div class="card metric-card">
+        <div class="number">604</div>
+        <div class="label">Emails Sent</div>
+      </div>
+      <div class="card metric-card">
+        <div class="number">500</div>
+        <div class="label">Delivered</div>
+      </div>
+      <div class="card metric-card">
+        <div class="number">54</div>
+        <div class="label">Opens</div>
+      </div>
+      <div class="card metric-card">
+        <div class="number">6</div>
+        <div class="label">Clicks</div>
+      </div>
+      <div class="card metric-card">
+        <div class="number">4</div>
+        <div class="label">Qualified Discovery Calls Booked</div>
+      </div>
+    </div>
+    <p style="text-align:center;margin-top:24px;font-size:0.88rem;">Triage went from 10–15 minutes per lead to under 1 minute. That's what your agents do.</p>
+  </div>
+</section>
+
+<!-- Add-Ons + Contract -->
+<section style="background: rgba(83,58,253,0.02);">
+  <div class="container">
+    <div class="section-header">
+      <h2>Add-Ons</h2>
+      <p>Need something beyond your tier? Each add-on is scoped, quoted, and built separately.</p>
+    </div>
+    <table class="addon-table">
+      <tr><th>Add-On</th><th class="price-col">Starting At</th></tr>
+      <tr><td>New agent build</td><td class="price-col">$2,500</td></tr>
+      <tr><td>New workflow integration</td><td class="price-col">$2,500</td></tr>
+      <tr><td>Custom training (company voice, SOPs)</td><td class="price-col">$2,500</td></tr>
+      <tr><td>Data migration</td><td class="price-col">$2,500</td></tr>
+    </table>
+
+    <h3 style="text-align:center;margin-bottom:24px;">Contract Terms</h3>
+    <div class="contract-grid">
+      <div class="contract-item"><h4>Minimum</h4><p>12 months</p></div>
+      <div class="contract-item"><h4>Cancellation After Month 12</h4><p>60 days written notice, no early-termination fee</p></div>
+      <div class="contract-item"><h4>Onboarding Fee</h4><p>Non-refundable once Week 2 has begun</p></div>
+      <div class="contract-item"><h4>Usage Tracking</h4><p>Required — fair billing and capacity planning</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer CTA -->
+<section class="footer-cta">
+  <div class="container">
+    <h2>Ready to See What AI Can Do for Your Business?</h2>
+    <p>Book a free 30-minute discovery call. We'll map your top automation opportunities — no pitch, no commitment.</p>
+    <a href="https://cal.com/malwa-asset-firm/maf-intro-meeting" class="btn">Book Your Discovery Call →</a>
+    <div class="footer-contact">
+      Questions? Email Garry Singh at <a href="mailto:garry@malwaassetfirm.com">garry@malwaassetfirm.com</a> or call <a href="tel:+16097975870">(609) 797-5870</a>.
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    Malwa Asset Firm — AI operations for service businesses. NJ/NY.
+  </div>
+</footer>
+
+</body>
+</html>

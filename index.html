@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -26,6 +26,39 @@
       --radius: 6px;
       --radius-sm: 4px;
       --radius-lg: 8px;
+      --bg: #ffffff;
+      --bg-alt: rgba(83,58,253,0.02);
+      --card-bg: #ffffff;
+      --nav-bg: rgba(255,255,255,0.92);
+      --text: #64748d;
+      --heading: #061b31;
+      --footer-bg: #f8f9fc;
+      --footer-text: #64748d;
+    }
+
+    [data-theme="dark"] {
+      --purple: #7c6ff7;
+      --purple-hover: #6a5ce5;
+      --purple-light: #4a3f8a;
+      --navy: #e2e8f0;
+      --slate: #94a3b8;
+      --label: #cbd5e1;
+      --white: #0f1117;
+      --border: #1e293b;
+      --brand-dark: #0f1117;
+      --success: #22c55e;
+      --success-text: #4ade80;
+      --shadow-blue: rgba(0,0,0,0.4);
+      --shadow-black: rgba(0,0,0,0.3);
+      --shadow-ambient: rgba(0,0,0,0.2);
+      --bg: #0f1117;
+      --bg-alt: #15171f;
+      --card-bg: #1a1d27;
+      --nav-bg: rgba(15,17,23,0.92);
+      --text: #94a3b8;
+      --heading: #e2e8f0;
+      --footer-bg: #0a0b10;
+      --footer-text: #64748b;
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -37,13 +70,13 @@
       font-weight: 300;
       font-size: 16px;
       line-height: 1.4;
-      color: var(--slate);
-      background: var(--white);
+      color: var(--text);
+      background: var(--bg);
       -webkit-font-smoothing: antialiased;
     }
 
     /* Typography */
-    h1, h2, h3, h4 { font-weight: 300; color: var(--navy); }
+    h1, h2, h3, h4 { font-weight: 300; color: var(--heading); }
     h1 { font-size: 3.5rem; line-height: 1.03; letter-spacing: -1.4px; }
     h2 { font-size: 2rem; line-height: 1.1; letter-spacing: -0.64px; }
     h3 { font-size: 1.38rem; line-height: 1.1; letter-spacing: -0.22px; }
@@ -58,7 +91,7 @@
     /* Navigation */
     nav {
       position: sticky; top: 0; z-index: 100;
-      background: rgba(255,255,255,0.92);
+      background: var(--nav-bg);
       backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border);
     }
@@ -66,12 +99,18 @@
       display: flex; align-items: center; justify-content: space-between;
       padding-top: 16px; padding-bottom: 16px;
     }
-    .nav-logo { font-size: 1.13rem; font-weight: 500; color: var(--navy); letter-spacing: -0.22px; }
+    .nav-logo { font-size: 1.13rem; font-weight: 500; color: var(--heading); letter-spacing: -0.22px; }
     .nav-links { display: flex; gap: 24px; align-items: center; }
-    .nav-links a { font-size: 0.88rem; font-weight: 400; color: var(--navy); text-decoration: none; }
+    .nav-links a { font-size: 0.88rem; font-weight: 400; color: var(--heading); text-decoration: none; }
     .nav-links a:hover { color: var(--purple); }
+    .theme-toggle {
+      background: none; border: 1px solid var(--border); border-radius: var(--radius-sm);
+      cursor: pointer; padding: 6px 10px; font-size: 1rem; line-height: 1;
+      color: var(--heading); transition: background 0.15s;
+    }
+    .theme-toggle:hover { background: var(--bg-alt); }
     .hamburger { display: none; background: none; border: none; cursor: pointer; padding: 8px; }
-    .hamburger span { display: block; width: 24px; height: 2px; background: var(--navy); margin: 5px 0; transition: 0.2s; }
+    .hamburger span { display: block; width: 24px; height: 2px; background: var(--heading); margin: 5px 0; transition: 0.2s; }
     .hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px,5px); }
     .hamburger.open span:nth-child(2) { opacity: 0; }
     .hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px,-5px); }
@@ -90,7 +129,7 @@
 
     /* Cards */
     .card {
-      background: var(--white); border: 1px solid var(--border); border-radius: var(--radius);
+      background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--radius);
       box-shadow: var(--shadow-blue) 0px 30px 45px -30px, var(--shadow-black) 0px 18px 36px -18px;
       padding: 32px;
     }
@@ -106,7 +145,7 @@
     .hero .ctas { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
     .trust-bar {
       margin-top: 48px; padding: 16px 24px;
-      background: rgba(83,58,253,0.04); border-radius: var(--radius-lg);
+      background: var(--bg-alt); border-radius: var(--radius-lg);
       font-size: 0.88rem; font-weight: 400; color: var(--label);
     }
 
@@ -243,7 +282,7 @@
       .pipeline { flex-direction: column; }
       .pipeline-step::after { content: '↓'; right: 50%; top: auto; bottom: -4px; transform: translateX(50%); }
       .hamburger { display: block; }
-      .nav-links { display: none; flex-direction: column; position: absolute; top: 100%; left: 0; right: 0; background: rgba(255,255,255,0.98); backdrop-filter: blur(12px); padding: 16px 24px; border-bottom: 1px solid var(--border); gap: 12px; }
+      .nav-links { display: none; flex-direction: column; position: absolute; top: 100%; left: 0; right: 0; background: var(--nav-bg); backdrop-filter: blur(12px); padding: 16px 24px; border-bottom: 1px solid var(--border); gap: 12px; }
       .nav-links.mobile-open { display: flex; }
       .results-grid { grid-template-columns: repeat(2, 1fr); }
       .roi-grid { grid-template-columns: 1fr; }
@@ -271,6 +310,7 @@
       <a href="#how-it-works">How It Works</a>
       <a href="#pricing">Pricing</a>
       <a href="#who-for">Who It's For</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode" title="Toggle dark mode">🌙</button>
       <a href="https://cal.com/malwa-asset-firm/maf-intro-meeting" class="btn btn-primary btn-nav">Book a Call</a>
     </div>
   </div>
@@ -641,6 +681,31 @@
     Malwa Asset Firm — AI operations for service businesses. NJ/NY.
   </div>
 </footer>
+
+<script>
+  function toggleTheme() {
+    const html = document.documentElement;
+    const btn = document.querySelector('.theme-toggle');
+    if (html.getAttribute('data-theme') === 'dark') {
+      html.setAttribute('data-theme', 'light');
+      btn.textContent = '🌙';
+      localStorage.setItem('theme', 'light');
+    } else {
+      html.setAttribute('data-theme', 'dark');
+      btn.textContent = '☀️';
+      localStorage.setItem('theme', 'dark');
+    }
+  }
+
+  // Load saved preference
+  (function() {
+    const saved = localStorage.getItem('theme');
+    if (saved === 'dark') {
+      document.documentElement.setAttribute('data-theme', 'dark');
+      document.querySelector('.theme-toggle').textContent = '☀️';
+    }
+  })();
+</script>
 
 </body>
 </html>

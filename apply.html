@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hermes MSP — Launch Slot Application | Malwa Asset Firm</title>
+  <meta name="description" content="Apply for one of 5 Hermes MSP launch slots. Managed AI operations for service businesses.">
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600&family=Source+Code+Pro:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%23533afd'/><text x='50%25' y='55%25' dominant-baseline='middle' text-anchor='middle' fill='white' font-family='system-ui' font-size='18' font-weight='600'>H</text></svg>">
+  <style>
+    :root {
+      --purple: #533afd;
+      --purple-hover: #4434d4;
+      --purple-light: #b9b9f9;
+      --navy: #061b31;
+      --slate: #64748d;
+      --label: #273951;
+      --white: #ffffff;
+      --border: #e5edf5;
+      --brand-dark: #1c1e54;
+      --success: #15be53;
+      --success-text: #108c3d;
+      --shadow-blue: rgba(50,50,93,0.25);
+      --shadow-black: rgba(0,0,0,0.1);
+      --radius: 6px;
+      --radius-sm: 4px;
+      --radius-lg: 8px;
+      --bg: #ffffff;
+      --bg-alt: rgba(83,58,253,0.02);
+      --card-bg: #ffffff;
+      --text: #64748d;
+      --heading: #061b31;
+    }
+
+    [data-theme="dark"] {
+      --purple: #7c6ff7;
+      --purple-hover: #6a5ce5;
+      --purple-light: #4a3f8a;
+      --navy: #e2e8f0;
+      --slate: #94a3b8;
+      --label: #cbd5e1;
+      --white: #0f1117;
+      --border: #1e293b;
+      --brand-dark: #0f1117;
+      --success: #22c55e;
+      --success-text: #4ade80;
+      --shadow-blue: rgba(0,0,0,0.4);
+      --shadow-black: rgba(0,0,0,0.3);
+      --bg: #0f1117;
+      --bg-alt: #15171f;
+      --card-bg: #1a1d27;
+      --text: #94a3b8;
+      --heading: #e2e8f0;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Source Sans 3', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+      font-weight: 300;
+      font-size: 16px;
+      line-height: 1.4;
+      color: var(--text);
+      background: var(--bg);
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    /* Progress bar */
+    .progress-wrap {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      height: 4px; background: var(--border);
+    }
+    .progress-bar {
+      height: 100%; background: var(--purple);
+      transition: width 0.4s ease;
+      width: 0%;
+    }
+
+    /* Theme toggle */
+    .theme-toggle {
+      position: fixed; top: 16px; right: 16px; z-index: 101;
+      background: var(--card-bg); border: 1px solid var(--border);
+      border-radius: var(--radius-sm); cursor: pointer;
+      padding: 6px 10px; font-size: 1rem; line-height: 1;
+      color: var(--heading); transition: background 0.15s;
+    }
+    .theme-toggle:hover { background: var(--bg-alt); }
+
+    /* Main card */
+    .form-container {
+      width: 100%; max-width: 560px;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-blue) 0px 30px 45px -30px, var(--shadow-black) 0px 18px 36px -18px;
+      padding: 48px 40px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Step counter */
+    .step-info {
+      text-align: center; margin-bottom: 32px;
+    }
+    .step-counter {
+      font-size: 0.75rem; font-weight: 500; color: var(--purple);
+      text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    .step-section-label {
+      font-size: 0.81rem; color: var(--slate); margin-top: 4px;
+    }
+
+    /* Question area */
+    .question-wrap {
+      min-height: 200px;
+      display: flex; flex-direction: column; align-items: center;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+    .question-wrap.fade-out {
+      opacity: 0; transform: translateY(-12px);
+    }
+
+    .question-label {
+      font-size: 1.38rem; font-weight: 300; color: var(--heading);
+      letter-spacing: -0.22px; text-align: center;
+      margin-bottom: 24px; line-height: 1.3;
+    }
+
+    .question-hint {
+      font-size: 0.88rem; color: var(--slate); text-align: center;
+      margin-bottom: 24px;
+    }
+
+    /* Inputs */
+    .input-field {
+      width: 100%; padding: 14px 16px;
+      font-family: 'Source Sans 3', system-ui, sans-serif;
+      font-size: 1.13rem; font-weight: 300; color: var(--heading);
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: var(--radius); outline: none;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .input-field:focus {
+      border-color: var(--purple);
+      box-shadow: 0 0 0 3px rgba(83,58,253,0.1);
+    }
+    .input-field::placeholder { color: var(--slate); opacity: 0.6; }
+
+    textarea.input-field {
+      min-height: 100px; resize: vertical;
+    }
+
+    /* Radio / Checkbox groups */
+    .option-group {
+      width: 100%; display: flex; flex-direction: column; gap: 8px;
+    }
+    .option-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 14px 16px;
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: var(--radius); cursor: pointer;
+      transition: border-color 0.15s, background 0.15s;
+      font-size: 1rem; font-weight: 300; color: var(--heading);
+    }
+    .option-item:hover { border-color: var(--purple-light); }
+    .option-item.selected {
+      border-color: var(--purple); background: rgba(83,58,253,0.04);
+    }
+    .option-item input { display: none; }
+    .option-radio {
+      width: 20px; height: 20px; border-radius: 50%;
+      border: 2px solid var(--border); flex-shrink: 0;
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .option-item.selected .option-radio {
+      border-color: var(--purple); background: var(--purple);
+      box-shadow: inset 0 0 0 4px var(--card-bg);
+    }
+    .option-check {
+      width: 20px; height: 20px; border-radius: var(--radius-sm);
+      border: 2px solid var(--border); flex-shrink: 0;
+      transition: border-color 0.15s, background 0.15s;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .option-item.selected .option-check {
+      border-color: var(--purple); background: var(--purple);
+    }
+    .option-item.selected .option-check::after {
+      content: '✓'; color: var(--card-bg); font-size: 0.75rem; font-weight: 600;
+    }
+
+    /* Buttons */
+    .btn-row {
+      display: flex; gap: 12px; justify-content: center; margin-top: 32px;
+      width: 100%;
+    }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      padding: 12px 28px; border-radius: var(--radius-sm);
+      font-family: 'Source Sans 3', system-ui, sans-serif;
+      font-size: 1rem; font-weight: 400; cursor: pointer;
+      border: none; transition: background 0.15s, box-shadow 0.15s;
+      min-height: 48px;
+    }
+    .btn-primary { background: var(--purple); color: #ffffff; }
+    .btn-primary:hover { background: var(--purple-hover); }
+    .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+    .btn-ghost {
+      background: transparent; color: var(--slate);
+      border: 1px solid var(--border);
+    }
+    .btn-ghost:hover { background: var(--bg-alt); }
+
+    /* Success / Path screens */
+    .result-screen {
+      text-align: center; padding: 24px 0;
+    }
+    .result-screen h2 {
+      font-size: 1.63rem; font-weight: 300; color: var(--heading);
+      letter-spacing: -0.44px; margin-bottom: 16px;
+    }
+    .result-screen p {
+      font-size: 1rem; color: var(--text); line-height: 1.5;
+      max-width: 420px; margin: 0 auto 24px;
+    }
+    .result-screen .btn { margin-top: 8px; }
+
+    .result-icon {
+      font-size: 3rem; margin-bottom: 16px;
+    }
+
+    /* Error */
+    .field-error {
+      font-size: 0.81rem; color: #e53e3e; margin-top: 8px; text-align: center;
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      .form-container { padding: 32px 24px; }
+      .question-label { font-size: 1.25rem; }
+      .input-field { font-size: 1rem; padding: 16px 14px; }
+      .btn { padding: 14px 24px; width: 100%; }
+      .btn-row { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
+<button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode" title="Toggle dark mode">🌙</button>
+
+<div class="form-container" id="formContainer">
+  <div class="step-info">
+    <div class="step-counter" id="stepCounter">Question 1 of 14</div>
+    <div class="step-section-label" id="sectionLabel">Section 1 — Who You Are</div>
+  </div>
+  <div class="question-wrap" id="questionWrap"></div>
+  <div class="btn-row" id="btnRow"></div>
+</div>
+
+<script>
+// ===== STATE =====
+const TOTAL_QUESTIONS = 14;
+const answers = {};
+let currentStep = 0;
+let multiSelectValues = {};
+
+// ===== QUESTIONS =====
+const questions = [
+  // Section 1: Who You Are
+  { id: 'name', section: 'Section 1 — Who You Are', label: "What's your name?", hint: "First and last name", type: 'text', required: true, placeholder: 'John Smith' },
+  { id: 'email', section: 'Section 1 — Who You Are', label: "What's your email?", hint: "We'll send your confirmation here", type: 'email', required: true, placeholder: 'john@company.com' },
+  { id: 'company', section: 'Section 1 — Who You Are', label: "What's your company called?", type: 'text', required: true, placeholder: 'ABC Plumbing & Heating' },
+  { id: 'website', section: 'Section 1 — Who You Are', label: "What's your company website?", hint: 'Optional — no worries if you don\'t have one', type: 'url', required: false, placeholder: 'abcplumbing.com' },
+  // Section 2: Qualification
+  { id: 'industry', section: 'Section 2 — Qualification', label: 'What industry are you in?', type: 'radio', required: true, options: ['HVAC', 'Plumbing', 'Electrical', 'Roofing', 'Contractors', 'Cleaning', 'Landscaping', 'Mobile Services', 'Other'] },
+  { id: 'revenue', section: 'Section 2 — Qualification', label: "What's your annual revenue?", type: 'radio', required: true, options: ['Under $1M', '$1M–$3M', '$3M–$10M', '$10M–$25M', '$25M+'] },
+  { id: 'owner', section: 'Section 2 — Qualification', label: 'Are you the owner or final decision-maker?', type: 'radio', required: true, options: ['Yes', 'No'] },
+  { id: 'bottleneck', section: 'Section 2 — Qualification', label: "What's the biggest bottleneck in your business right now?", hint: 'Be specific — this helps us prepare for your call', type: 'textarea', required: true, placeholder: 'We lose leads because nobody follows up within 24 hours...' },
+  { id: 'leaking_workflow', section: 'Section 2 — Qualification', label: 'Which workflow is leaking the most money?', hint: 'Select all that apply', type: 'checkbox', required: true, options: ['Lead response', 'Scheduling', 'Follow-up', 'CRM & admin', 'Reviews & referrals', 'Reporting', 'Other'] },
+  { id: 'urgency', section: 'Section 2 — Qualification', label: 'Do you want this solved in the next 30–90 days?', type: 'radio', required: true, options: ['Yes', 'No'] },
+  { id: 'budget', section: 'Section 2 — Qualification', label: 'Can you invest at least $7,500 setup + $1,500/month if the ROI is clear?', type: 'radio', required: true, options: ['Yes', 'No'] },
+  // Section 3: Tier Preference
+  { id: 'tier', section: 'Section 3 — Tier Preference', label: 'Which path fits you best?', type: 'radio', required: true, options: ['T1 — Fix the lead-response leak', 'T2 — Add admin ops + follow-up', 'T3 — Full AI operations layer', 'Not sure — help me decide'] },
+  { id: 'case_study', section: 'Section 3 — Tier Preference', label: 'Would you be open to a case study or testimonial if selected for founding-client terms?', hint: 'Founding clients get locked-in discounted pricing in exchange for helping us build the next case study', type: 'radio', required: true, options: ['Yes, I\'m open to it', 'No, not interested'], condition: () => answers.tier && answers.tier.includes('T3') },
+  { id: 'call_time', section: 'Section 3 — Tier Preference', label: "When's the best time for a 30-minute call?", type: 'radio', required: true, options: ['Mornings (9–12 ET)', 'Afternoons (12–5 ET)', 'Evenings (5–7 ET)'] },
+];
+
+// ===== RENDER =====
+function renderQuestion(idx) {
+  if (idx >= questions.length) {
+    showResult();
+    return;
+  }
+
+  const q = questions[idx];
+
+  // Skip conditional questions
+  if (q.condition && !q.condition()) {
+    currentStep++;
+    renderQuestion(currentStep);
+    return;
+  }
+
+  currentStep = idx;
+  const wrap = document.getElementById('questionWrap');
+  const btnRow = document.getElementById('btnRow');
+  const stepCounter = document.getElementById('stepCounter');
+  const sectionLabel = document.getElementById('sectionLabel');
+  const progressBar = document.getElementById('progressBar');
+
+  // Count visible questions for progress
+  let visibleCount = 0;
+  let visibleIdx = 0;
+  for (let i = 0; i < questions.length; i++) {
+    const qi = questions[i];
+    if (!qi.condition || qi.condition()) visibleCount++;
+    if (i <= idx && (!qi.condition || qi.condition())) visibleIdx++;
+  }
+
+  stepCounter.textContent = `Question ${visibleIdx} of ${visibleCount}`;
+  sectionLabel.textContent = q.section;
+  progressBar.style.width = `${(visibleIdx / visibleCount) * 100}%`;
+
+  let html = `<div class="question-label">${q.label}</div>`;
+  if (q.hint) html += `<div class="question-hint">${q.hint}</div>`;
+
+  if (q.type === 'text' || q.type === 'email' || q.type === 'url') {
+    html += `<input type="${q.type}" class="input-field" id="fieldInput" placeholder="${q.placeholder || ''}" value="${answers[q.id] || ''}" autofocus>`;
+    html += `<div class="field-error" id="fieldError"></div>`;
+  } else if (q.type === 'textarea') {
+    html += `<textarea class="input-field" id="fieldInput" placeholder="${q.placeholder || ''}" autofocus>${answers[q.id] || ''}</textarea>`;
+    html += `<div class="field-error" id="fieldError"></div>`;
+  } else if (q.type === 'radio') {
+    html += '<div class="option-group">';
+    for (const opt of q.options) {
+      const selected = answers[q.id] === opt;
+      html += `<div class="option-item${selected ? ' selected' : ''}" data-value="${opt}" onclick="selectOption(this, '${q.id}')">
+        <div class="option-radio"></div>
+        <span>${opt}</span>
+      </div>`;
+    }
+    html += '</div>';
+  } else if (q.type === 'checkbox') {
+    if (!multiSelectValues[q.id]) multiSelectValues[q.id] = new Set(answers[q.id] ? answers[q.id].split('||') : []);
+    html += '<div class="option-group">';
+    for (const opt of q.options) {
+      const selected = multiSelectValues[q.id].has(opt);
+      html += `<div class="option-item${selected ? ' selected' : ''}" data-value="${opt}" onclick="toggleCheckbox(this, '${q.id}')">
+        <div class="option-check"></div>
+        <span>${opt}</span>
+      </div>`;
+    }
+    html += '</div>';
+  }
+
+  wrap.innerHTML = html;
+  wrap.classList.remove('fade-out');
+
+  // Buttons
+  let btnHtml = '';
+  if (idx > 0) {
+    btnHtml += '<button class="btn btn-ghost" onclick="goBack()">← Back</button>';
+  }
+  btnHtml += `<button class="btn btn-primary" id="btnNext" onclick="goNext()">${idx === questions.length - 1 ? 'Submit Application →' : 'Continue →'}</button>`;
+  btnRow.innerHTML = btnHtml;
+
+  // Focus
+  setTimeout(() => {
+    const input = document.getElementById('fieldInput');
+    if (input) input.focus();
+  }, 100);
+}
+
+// ===== NAVIGATION =====
+function goNext() {
+  const q = questions[currentStep];
+  if (q.condition && !q.condition()) { currentStep++; renderQuestion(currentStep); return; }
+
+  let value = null;
+
+  if (q.type === 'text' || q.type === 'email' || q.type === 'url' || q.type === 'textarea') {
+    const input = document.getElementById('fieldInput');
+    value = input.value.trim();
+    if (q.required && !value) {
+      document.getElementById('fieldError').textContent = 'This field is required.';
+      input.focus();
+      return;
+    }
+    if (q.type === 'email' && value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+      document.getElementById('fieldError').textContent = 'Please enter a valid email address.';
+      input.focus();
+      return;
+    }
+  } else if (q.type === 'radio') {
+    value = answers[q.id];
+    if (q.required && !value) {
+      return; // No error message — just don't advance
+    }
+  } else if (q.type === 'checkbox') {
+    const selected = Array.from(multiSelectValues[q.id] || []);
+    if (q.required && selected.length === 0) return;
+    value = selected.join('||');
+  }
+
+  if (value !== null) answers[q.id] = value;
+
+  // Check routing after Section 2 questions
+  if (q.id === 'revenue') {
+    if (value === 'Under $1M' || value === '$25M+') {
+      showNotFit();
+      return;
+    }
+  }
+  if (q.id === 'owner') {
+    if (value === 'No') {
+      showNotFit();
+      return;
+    }
+  }
+  if (q.id === 'urgency') {
+    if (value === 'No') {
+      showAuditPath();
+      return;
+    }
+  }
+  if (q.id === 'budget') {
+    if (value === 'No') {
+      showAuditPath();
+      return;
+    }
+  }
+
+  // Animate out
+  const wrap = document.getElementById('questionWrap');
+  wrap.classList.add('fade-out');
+
+  setTimeout(() => {
+    currentStep++;
+    if (currentStep >= questions.length) {
+      showSuccess();
+    } else {
+      renderQuestion(currentStep);
+    }
+  }, 250);
+}
+
+function goBack() {
+  if (currentStep <= 0) return;
+  const wrap = document.getElementById('questionWrap');
+  wrap.classList.add('fade-out');
+  setTimeout(() => {
+    currentStep--;
+    renderQuestion(currentStep);
+  }, 250);
+}
+
+function selectOption(el, fieldId) {
+  const parent = el.parentElement;
+  parent.querySelectorAll('.option-item').forEach(item => item.classList.remove('selected'));
+  el.classList.add('selected');
+  answers[fieldId] = el.dataset.value;
+}
+
+function toggleCheckbox(el, fieldId) {
+  el.classList.toggle('selected');
+  const val = el.dataset.value;
+  if (el.classList.contains('selected')) {
+    multiSelectValues[fieldId].add(val);
+  } else {
+    multiSelectValues[fieldId].delete(val);
+  }
+}
+
+// ===== RESULT SCREENS =====
+function showNotFit() {
+  const container = document.getElementById('formContainer');
+  container.innerHTML = `
+    <div class="result-screen">
+      <div class="result-icon">🤝</div>
+      <h2>Thanks for your interest</h2>
+      <p>Based on what you've shared, Hermes MSP isn't the right fit right now — but that doesn't mean we can't help.</p>
+      <p style="font-size:0.88rem;color:var(--slate);">We'll reach out with resources that match where you are. In the meantime, check out our Substack for tactical AI operations content.</p>
+      <a href="https://malwaassetfirm.substack.com" class="btn btn-primary" style="text-decoration:none;">Read the Substack →</a>
+    </div>
+  `;
+  document.getElementById('progressBar').style.width = '100%';
+  document.getElementById('stepCounter').textContent = 'Done';
+  document.getElementById('sectionLabel').textContent = '';
+  document.getElementById('btnRow').innerHTML = '';
+}
+
+function showAuditPath() {
+  const container = document.getElementById('formContainer');
+  container.innerHTML = `
+    <div class="result-screen">
+      <div class="result-icon">🔍</div>
+      <h2>Let's start with an audit</h2>
+      <p>You've got a real business with real pain — but it sounds like a managed AI service might not be the right move yet.</p>
+      <p style="font-size:0.88rem;color:var(--slate);">We'd recommend starting with a free business audit. We'll map your highest-leverage opportunities and show you exactly what an AI operations layer would look like. No pitch, no commitment.</p>
+      <a href="https://cal.com/malwa-asset-firm/maf-intro-meeting" class="btn btn-primary" style="text-decoration:none;">Book a Free Audit Call →</a>
+    </div>
+  `;
+  document.getElementById('progressBar').style.width = '100%';
+  document.getElementById('stepCounter').textContent = 'Done';
+  document.getElementById('sectionLabel').textContent = '';
+  document.getElementById('btnRow').innerHTML = '';
+}
+
+function showSuccess() {
+  const container = document.getElementById('formContainer');
+  container.innerHTML = `
+    <div class="result-screen">
+      <div class="result-icon">🎯</div>
+      <h2>You're in</h2>
+      <p>Based on what you've shared, you're exactly the kind of business Hermes MSP is built for.</p>
+      <p style="font-size:0.88rem;color:var(--slate);">Pick a time for your 30-minute qualification call below. Garry will review your application before the call so you don't have to repeat anything.</p>
+      <a href="https://cal.com/malwa-asset-firm/maf-intro-meeting" class="btn btn-primary" style="text-decoration:none;">Book Your Call →</a>
+    </div>
+  `;
+  document.getElementById('progressBar').style.width = '100%';
+  document.getElementById('stepCounter').textContent = 'Done';
+  document.getElementById('sectionLabel').textContent = '';
+  document.getElementById('btnRow').innerHTML = '';
+
+  // Submit to Airtable
+  submitToAirtable();
+}
+
+// ===== AIRTABLE SUBMISSION =====
+async function submitToAirtable() {
+  const AIRTABLE_API_KEY = '{{AIRTABLE_API_KEY}}';
+  const BASE_ID = '{{AIRTABLE_BASE_ID}}';
+  const TABLE_NAME = 'MSP%20Applications';
+
+  const fields = {
+    Name: answers.name || '',
+    Email: answers.email || '',
+    Company: answers.company || '',
+    Website: answers.website || '',
+    Industry: answers.industry || '',
+    Revenue: answers.revenue || '',
+    Owner: answers.owner || '',
+    Bottleneck: answers.bottleneck || '',
+    LeakingWorkflow: answers.leaking_workflow || '',
+    Urgency: answers.urgency || '',
+    Budget: answers.budget || '',
+    Tier: answers.tier || '',
+    CaseStudy: answers.case_study || '',
+    CallTime: answers.call_time || '',
+    SubmittedAt: new Date().toISOString()
+  };
+
+  try {
+    await fetch(`https://api.airtable.com/v0/${BASE_ID}/${TABLE_NAME}`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${AIRTABLE_API_KEY}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ fields })
+    });
+  } catch (e) {
+    console.error('Airtable submission failed:', e);
+  }
+}
+
+// ===== THEME =====
+function toggleTheme() {
+  const html = document.documentElement;
+  const btn = document.querySelector('.theme-toggle');
+  if (html.getAttribute('data-theme') === 'dark') {
+    html.setAttribute('data-theme', 'light');
+    btn.textContent = '🌙';
+    localStorage.setItem('theme', 'light');
+  } else {
+    html.setAttribute('data-theme', 'dark');
+    btn.textContent = '☀️';
+    localStorage.setItem('theme', 'dark');
+  }
+}
+
+(function() {
+  const saved = localStorage.getItem('theme');
+  if (saved === 'dark') {
+    document.documentElement.setAttribute('data-theme', 'dark');
+    document.querySelector('.theme-toggle').textContent = '☀️';
+  }
+})();
+
+// ===== KEYBOARD =====
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' && document.activeElement?.tagName !== 'TEXTAREA') {
+    e.preventDefault();
+    goNext();
+  }
+  if (e.key === 'Escape') {
+    goBack();
+  }
+});
+
+// ===== START =====
+renderQuestion(0);
+</script>
+
+</body>
+</html>

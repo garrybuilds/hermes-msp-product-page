@@ -536,44 +536,44 @@ function showSuccess() {
   document.getElementById('btnRow').innerHTML = '';
 
   // Submit to Airtable
-  submitToAirtable();
+  submitToSupabase();
 }
 
-// ===== AIRTABLE SUBMISSION =====
-async function submitToAirtable() {
-  const AIRTABLE_API_KEY = '{{AIRTABLE_API_KEY}}';
-  const BASE_ID = '{{AIRTABLE_BASE_ID}}';
-  const TABLE_NAME = 'MSP%20Applications';
+// ===== SUPABASE SUBMISSION =====
+async function submitToSupabase() {
+  const SUPABASE_URL = 'https://zbjioabligamwmqgtxqs.supabase.co';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpiamlvYWJsaWdhbXdtcWd0eHFzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQwNzgwNjgsImV4cCI6MjA5OTY1NDA2OH0.zNMVqjzLj3sW4mgWLpEUtnf7w6FPsq7ZUnW6vWUgTTk';
 
-  const fields = {
-    Name: answers.name || '',
-    Email: answers.email || '',
-    Company: answers.company || '',
-    Website: answers.website || '',
-    Industry: answers.industry || '',
-    Revenue: answers.revenue || '',
-    Owner: answers.owner || '',
-    Bottleneck: answers.bottleneck || '',
-    LeakingWorkflow: answers.leaking_workflow || '',
-    Urgency: answers.urgency || '',
-    Budget: answers.budget || '',
-    Tier: answers.tier || '',
-    CaseStudy: answers.case_study || '',
-    CallTime: answers.call_time || '',
-    SubmittedAt: new Date().toISOString()
+  const body = {
+    name: answers.name || '',
+    email: answers.email || '',
+    company: answers.company || '',
+    website: answers.website || '',
+    team_size: answers.team_size || '',
+    industry: answers.industry || '',
+    revenue: answers.revenue || '',
+    owner: answers.owner || '',
+    bottleneck: answers.bottleneck || '',
+    leaking_workflow: answers.leaking_workflow || '',
+    urgency: answers.urgency || '',
+    budget: answers.budget || '',
+    tier: answers.tier || '',
+    case_study: answers.case_study || '',
+    call_time: answers.call_time || ''
   };
 
   try {
-    await fetch(`https://api.airtable.com/v0/${BASE_ID}/${TABLE_NAME}`, {
+    await fetch(`${SUPABASE_URL}/rest/v1/msp_applications`, {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${AIRTABLE_API_KEY}`,
-        'Content-Type': 'application/json'
+        'apikey': SUPABASE_ANON_KEY,
+        'Content-Type': 'application/json',
+        'Prefer': 'return=minimal'
       },
-      body: JSON.stringify({ fields })
+      body: JSON.stringify(body)
     });
   } catch (e) {
-    console.error('Airtable submission failed:', e);
+    console.error('Supabase submission failed:', e);
   }
 }
 

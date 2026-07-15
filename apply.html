@@ -540,11 +540,11 @@ function showSuccess() {
 }
 
 // ===== SUPABASE SUBMISSION =====
-async function submitToSupabase() {
+function submitToSupabase() {
   const SUPABASE_URL = 'https://zbjioabligamwmqgtxqs.supabase.co';
   const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpiamlvYWJsaWdhbXdtcWd0eHFzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQwNzgwNjgsImV4cCI6MjA5OTY1NDA2OH0.zNMVqjzLj3sW4mgWLpEUtnf7w6FPsq7ZUnW6vWUgTTk';
 
-  const body = {
+  const body = JSON.stringify({
     name: answers.name || '',
     email: answers.email || '',
     company: answers.company || '',
@@ -560,21 +560,10 @@ async function submitToSupabase() {
     tier: answers.tier || '',
     case_study: answers.case_study || '',
     call_time: answers.call_time || ''
-  };
+  });
 
-  try {
-    await fetch(`${SUPABASE_URL}/rest/v1/msp_applications`, {
-      method: 'POST',
-      headers: {
-        'apikey': SUPABASE_ANON_KEY,
-        'Content-Type': 'application/json',
-        'Prefer': 'return=minimal'
-      },
-      body: JSON.stringify(body)
-    });
-  } catch (e) {
-    console.error('Supabase submission failed:', e);
-  }
+  const blob = new Blob([body], { type: 'application/json' });
+  navigator.sendBeacon(`${SUPABASE_URL}/rest/v1/msp_applications?apikey=${encodeURIComponent(SUPABASE_ANON_KEY)}`, blob);
 }
 
 // ===== THEME =====

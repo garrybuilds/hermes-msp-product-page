@@ -526,9 +526,11 @@ function showSuccess() {
       <div class="result-icon">🎯</div>
       <h2>You're in</h2>
       <p>Based on what you've shared, you're exactly the kind of business Hermes MSP is built for.</p>
-      <p style="font-size:0.88rem;color:var(--slate);">Pick a time for your 30-minute qualification call below. Your name and email are pre-filled — just choose a time and confirm.</p>
-      <a href="${calUrl}" class="btn btn-primary" style="text-decoration:none;">Book Your Call →</a>
-      <p id="submitStatus" style="margin-top:16px;font-size:0.81rem;color:var(--success-text);">✓ Application submitted</p>
+      <p id="submitStatus" style="margin-top:16px;font-size:0.81rem;color:var(--slate);">Submitting your application…</p>
+      <div id="calLink" style="display:none;">
+        <p style="font-size:0.88rem;color:var(--slate);">Pick a time for your 30-minute qualification call below. Your name and email are pre-filled — just choose a time and confirm.</p>
+        <a href="${calUrl}" class="btn btn-primary" style="text-decoration:none;">Book Your Call →</a>
+      </div>
     </div>
   `;
   document.getElementById('progressBar').style.width = '100%';
@@ -577,9 +579,21 @@ function submitToSupabase() {
     body: body,
     keepalive: true
   }).then(r => {
-    if (statusEl) statusEl.textContent = r.ok ? '✓ Application submitted' : '⚠ Saved — we\'ll confirm by email';
+    if (statusEl) {
+      if (r.ok) {
+        statusEl.textContent = '✓ Application submitted';
+        statusEl.style.color = 'var(--success-text)';
+      } else {
+        statusEl.textContent = '⚠ Saved — we\'ll confirm by email';
+      }
+    }
+    // Reveal Cal.com link only after submission completes
+    const calLink = document.getElementById('calLink');
+    if (calLink) calLink.style.display = 'block';
   }).catch(() => {
     if (statusEl) statusEl.textContent = '⚠ Saved — we\'ll confirm by email';
+    const calLink = document.getElementById('calLink');
+    if (calLink) calLink.style.display = 'block';
   });
 }
 

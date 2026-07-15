@@ -566,8 +566,7 @@ function submitToSupabase() {
   const blob = new Blob([body], { type: 'application/json' });
   const url = `${SUPABASE_URL}/rest/v1/msp_applications`;
 
-  // Use fetch with keepalive — survives page navigation like sendBeacon,
-  // but supports custom headers (apikey) which sendBeacon cannot
+  // fetch + keepalive survives page navigation AND supports custom headers
   fetch(url, {
     method: 'POST',
     headers: {

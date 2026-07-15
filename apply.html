@@ -268,7 +268,7 @@
 
 <script>
 // ===== STATE =====
-const TOTAL_QUESTIONS = 14;
+const TOTAL_QUESTIONS = 15;
 const answers = {};
 let currentStep = 0;
 let multiSelectValues = {};
@@ -280,6 +280,7 @@ const questions = [
   { id: 'email', section: 'Section 1 — Who You Are', label: "What's your email?", hint: "We'll send your confirmation here", type: 'email', required: true, placeholder: 'john@company.com' },
   { id: 'company', section: 'Section 1 — Who You Are', label: "What's your company called?", type: 'text', required: true, placeholder: 'ABC Plumbing & Heating' },
   { id: 'website', section: 'Section 1 — Who You Are', label: "What's your company website?", hint: 'Optional — no worries if you don\'t have one', type: 'url', required: false, placeholder: 'abcplumbing.com' },
+  { id: 'team_size', section: 'Section 1 — Who You Are', label: "How many people on your team?", type: 'radio', required: true, options: ['1–5', '6–20', '21–50', '50+'] },
   // Section 2: Qualification
   { id: 'industry', section: 'Section 2 — Qualification', label: 'What industry are you in?', type: 'radio', required: true, options: ['HVAC', 'Plumbing', 'Electrical', 'Roofing', 'Contractors', 'Cleaning', 'Landscaping', 'Mobile Services', 'Other'] },
   { id: 'revenue', section: 'Section 2 — Qualification', label: "What's your annual revenue?", type: 'radio', required: true, options: ['Under $1M', '$1M–$3M', '$3M–$10M', '$10M–$25M', '$25M+'] },
@@ -517,13 +518,16 @@ function showAuditPath() {
 
 function showSuccess() {
   const container = document.getElementById('formContainer');
+  const name = encodeURIComponent(answers.name || '');
+  const email = encodeURIComponent(answers.email || '');
+  const calUrl = `https://cal.com/malwa-asset-firm/hermes-msp-discovery?name=${name}&email=${email}`;
   container.innerHTML = `
     <div class="result-screen">
       <div class="result-icon">🎯</div>
       <h2>You're in</h2>
       <p>Based on what you've shared, you're exactly the kind of business Hermes MSP is built for.</p>
-      <p style="font-size:0.88rem;color:var(--slate);">Pick a time for your 30-minute qualification call below. Garry will review your application before the call so you don't have to repeat anything.</p>
-      <a href="https://cal.com/malwa-asset-firm/hermes-msp-discovery" class="btn btn-primary" style="text-decoration:none;">Book Your Call →</a>
+      <p style="font-size:0.88rem;color:var(--slate);">Pick a time for your 30-minute qualification call below. Your name and email are pre-filled — just choose a time and confirm.</p>
+      <a href="${calUrl}" class="btn btn-primary" style="text-decoration:none;">Book Your Call →</a>
     </div>
   `;
   document.getElementById('progressBar').style.width = '100%';

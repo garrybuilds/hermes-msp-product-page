@@ -521,6 +521,13 @@ function showSuccess() {
   const name = encodeURIComponent(answers.name || '');
   const email = encodeURIComponent(answers.email || '');
   const calUrl = `https://cal.com/malwa-asset-firm/hermes-msp-discovery?name=${name}&email=${email}`;
+
+  // Update chrome BEFORE replacing container contents
+  document.getElementById('progressBar').style.width = '100%';
+  document.getElementById('stepCounter').textContent = 'Done';
+  document.getElementById('sectionLabel').textContent = '';
+  document.getElementById('btnRow').innerHTML = '';
+
   container.innerHTML = `
     <div class="result-screen">
       <div class="result-icon">🎯</div>
@@ -533,10 +540,6 @@ function showSuccess() {
       </div>
     </div>
   `;
-  document.getElementById('progressBar').style.width = '100%';
-  document.getElementById('stepCounter').textContent = 'Done';
-  document.getElementById('sectionLabel').textContent = '';
-  document.getElementById('btnRow').innerHTML = '';
 
   submitToSupabase();
 }

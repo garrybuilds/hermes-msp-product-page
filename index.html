@@ -6,7 +6,10 @@
   <title>Hermes MSP — Your AI Operations Department | Malwa Asset Firm</title>
   <meta name="description" content="Managed AI agents for service businesses. We build it. We run it. You grow. 14 days from kickoff to your first agent live in production.">
   <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600&family=Source+Code+Pro:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%23533afd'/><text x='50%25' y='55%25' dominant-baseline='middle' text-anchor='middle' fill='white' font-family='system-ui' font-size='18' font-weight='600'>H</text></svg>">
+  <script>(function(){var s=localStorage.getItem('theme');if(s)document.documentElement.setAttribute('data-theme',s);})();</script>
   <style>
     :root {
       --purple: #533afd;
@@ -278,6 +281,7 @@
       section { padding: 64px 0; }
       .hero { padding: 80px 0 48px; }
       .grid-3, .pricing-grid { grid-template-columns: 1fr; }
+      div[style*="grid-template-columns:repeat(3,1fr)"], div[style*="grid-template-columns:repeat(2,1fr)"] { grid-template-columns: 1fr !important; }
       .grid-2, .included-grid, .results-grid, .contract-grid { grid-template-columns: 1fr; }
       .pipeline { flex-direction: column; }
       .pipeline-step::after { content: '↓'; right: 50%; top: auto; bottom: -4px; transform: translateX(50%); }
@@ -295,18 +299,25 @@
     @media (max-width: 480px) {
       .results-grid { grid-template-columns: 1fr; }
     }
-  :focus-visible { outline: 2px solid var(--purple); outline-offset: 2px; }@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; animation: none !important; } }html { scroll-padding-top: 80px; }</style>
+  :focus-visible { outline: 2px solid var(--purple); outline-offset: 2px; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; animation: none !important; } }
+  html { scroll-padding-top: 80px; }
+  .skip-link { position: absolute; top: -40px; left: 0; background: var(--purple); color: white; padding: 8px 16px; z-index: 100; text-decoration: none; border-radius: 0 0 4px 0; }
+  .skip-link:focus { top: 0; }
+  @media print { nav, .footer-cta, .founding-block { background: white !important; color: black !important; } * { box-shadow: none !important; } section { padding: 16px 0; } }
+</style>
 </head>
 <body>
+<a href="#how-it-works" class="skip-link">Skip to content</a>
 
 <!-- Navigation -->
 <nav>
   <div class="container">
     <div class="nav-logo">Hermes MSP</div>
-    <button class="hamburger" onclick="this.classList.toggle('open');document.querySelector('.nav-links').classList.toggle('mobile-open')" aria-label="Toggle menu">
+    <button class="hamburger" onclick="this.classList.toggle('open');document.querySelector('.nav-links').classList.toggle('mobile-open')" aria-label="Toggle menu" aria-expanded="false" aria-controls="nav-links">
       <span></span><span></span><span></span>
     </button>
-    <div class="nav-links">
+    <div class="nav-links" id="nav-links">
       <a href="#how-it-works">How It Works</a>
       <a href="#your-stack">Your Stack</a>
       <a href="#pricing">Pricing</a>

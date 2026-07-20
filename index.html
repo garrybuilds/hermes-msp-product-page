@@ -316,6 +316,14 @@
   @media print { nav, .footer-cta, .founding-block { background: white !important; color: black !important; } * { box-shadow: none !important; } section { padding: 16px 0; } }
   [data-theme="dark"] .footer-cta { background: linear-gradient(135deg, var(--brand-dark), #2e2b8c); border-top: 1px solid var(--border); }
   [data-theme="dark"] .not-fit strong { color: #ff6b9d; }
+
+  /* Dark mode: ensure card body text has sufficient contrast (≥4.5:1) */
+  [data-theme="dark"] .card p { color: #cbd5e1; }
+  [data-theme="dark"] .card li { color: #cbd5e1; }
+  [data-theme="dark"] #how-we-work .card p,
+  [data-theme="dark"] #guarantee .card p,
+  [data-theme="dark"] #how-we-work .card li,
+  [data-theme="dark"] #guarantee .card li { color: #e2e8f0; }
 </style>
 </head>
 <body>

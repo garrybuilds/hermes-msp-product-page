@@ -1,0 +1,17 @@
+name: Syntax Check
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  syntax-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: HTML syntax check (index.html)
+        run: node -e "new Function(require('fs').readFileSync('index.html','utf8'))"
+
+      - name: HTML syntax check (apply.html)
+        run: node -e "new Function(require('fs').readFileSync('apply.html','utf8'))"

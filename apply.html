@@ -5,6 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Hermes MSP — Launch Slot Application | Malwa Asset Firm</title>
   <meta name="description" content="Apply for one of 5 Hermes MSP launch slots. Managed AI operations for service businesses.">
+  <meta property="og:title" content="Hermes MSP — Launch Slot Application">
+  <meta property="og:description" content="Apply for one of 5 Hermes MSP launch slots. Managed AI operations for service businesses.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://msp.malwaassetfirm.com/apply">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Hermes MSP — Launch Slot Application">
+  <meta name="twitter:description" content="Apply for one of 5 Hermes MSP launch slots.">
+  <link rel="canonical" href="https://msp.malwaassetfirm.com/apply">
   <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600&family=Source+Code+Pro:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%23533afd'/><text x='50%25' y='55%25' dominant-baseline='middle' text-anchor='middle' fill='white' font-family='system-ui' font-size='18' font-weight='600'>H</text></svg>">
   <style>
@@ -484,6 +492,11 @@ function toggleCheckbox(el, fieldId) {
 // ===== RESULT SCREENS =====
 function showNotFit() {
   const container = document.getElementById('formContainer');
+  // Update chrome BEFORE replacing innerHTML (elements are children of container)
+  document.getElementById('progressBar').style.width = '100%';
+  document.getElementById('stepCounter').textContent = 'Done';
+  document.getElementById('sectionLabel').textContent = '';
+  document.getElementById('btnRow').innerHTML = '';
   container.innerHTML = `
     <div class="result-screen">
       <div class="result-icon">🤝</div>
@@ -493,14 +506,15 @@ function showNotFit() {
       <a href="https://malwaassetfirm.substack.com" class="btn btn-primary" style="text-decoration:none;">Read the Substack →</a>
     </div>
   `;
-  document.getElementById('progressBar').style.width = '100%';
-  document.getElementById('stepCounter').textContent = 'Done';
-  document.getElementById('sectionLabel').textContent = '';
-  document.getElementById('btnRow').innerHTML = '';
 }
 
 function showAuditPath() {
   const container = document.getElementById('formContainer');
+  // Update chrome BEFORE replacing innerHTML (elements are children of container)
+  document.getElementById('progressBar').style.width = '100%';
+  document.getElementById('stepCounter').textContent = 'Done';
+  document.getElementById('sectionLabel').textContent = '';
+  document.getElementById('btnRow').innerHTML = '';
   container.innerHTML = `
     <div class="result-screen">
       <div class="result-icon">🔍</div>
@@ -510,10 +524,6 @@ function showAuditPath() {
       <a href="https://cal.com/malwa-asset-firm/maf-intro-meeting" class="btn btn-primary" style="text-decoration:none;">Book a Free Audit Call →</a>
     </div>
   `;
-  document.getElementById('progressBar').style.width = '100%';
-  document.getElementById('stepCounter').textContent = 'Done';
-  document.getElementById('sectionLabel').textContent = '';
-  document.getElementById('btnRow').innerHTML = '';
 }
 
 function showSuccess() {
@@ -547,7 +557,7 @@ function showSuccess() {
 // ===== SUPABASE SUBMISSION =====
 function submitToSupabase() {
   const SUPABASE_URL = 'https://zbjioabligamwmqgtxqs.supabase.co';
-  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpiamlvYWJsaWdhbXdtcWd0eHFzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQwNzgwNjgsImV4cCI6MjA5OTY1NDA2OH0.zNMVqjzLj3sW4mgWLpEUtnf7w6FPsq7ZUnW6vWUgTTk';
+  const SUPABASE_ANON_KEY = 'sb_publishable_5vsR3xHV2cL8B1YVYTXkKw_XfK7e2p9';
   const statusEl = document.getElementById('submitStatus');
 
   const body = JSON.stringify({

@@ -600,17 +600,16 @@ function submitToSupabase() {
       if (r.ok) {
         statusEl.textContent = '✓ Application submitted';
         statusEl.style.color = 'var(--success-text)';
+        // Reveal Cal.com link ONLY on successful submission
+        const calLink = document.getElementById('calLink');
+        if (calLink) calLink.style.display = 'block';
       } else {
-        statusEl.textContent = '⚠ Saved — we\'ll confirm by email';
+        statusEl.textContent = '⚠ Submission failed — please try again or email garry@malwaassetfirm.com';
+        statusEl.style.color = 'var(--danger-text)';
       }
     }
-    // Reveal Cal.com link only after submission completes
-    const calLink = document.getElementById('calLink');
-    if (calLink) calLink.style.display = 'block';
   }).catch(() => {
-    if (statusEl) statusEl.textContent = '⚠ Saved — we\'ll confirm by email';
-    const calLink = document.getElementById('calLink');
-    if (calLink) calLink.style.display = 'block';
+    if (statusEl) statusEl.textContent = '⚠ Network error — please email garry@malwaassetfirm.com';
   });
 }
 

@@ -412,11 +412,15 @@ function goNext() {
   } else if (q.type === 'radio') {
     value = answers[q.id];
     if (q.required && !value) {
-      return; // No error message — just don't advance
+      document.getElementById('fieldError').textContent = 'Please select an option.';
+      return;
     }
   } else if (q.type === 'checkbox') {
     const selected = Array.from(multiSelectValues[q.id] || []);
-    if (q.required && selected.length === 0) return;
+    if (q.required && selected.length === 0) {
+      document.getElementById('fieldError').textContent = 'Please select at least one option.';
+      return;
+    }
     value = selected.join('||');
   }
 

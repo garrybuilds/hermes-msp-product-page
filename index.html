@@ -324,6 +324,35 @@
   [data-theme="dark"] #guarantee .card p,
   [data-theme="dark"] #how-we-work .card li,
   [data-theme="dark"] #guarantee .card li { color: #e2e8f0; }
+
+  /* Demo modal */
+  .demo-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 1000; align-items: center; justify-content: center; }
+  .demo-overlay.open { display: flex; }
+  .demo-modal { background: var(--card-bg); border-radius: var(--radius-lg); max-width: 600px; width: 90%; padding: 40px; position: relative; text-align: center; }
+  .demo-modal h3 { margin-bottom: 16px; }
+  .demo-modal .demo-steps { text-align: left; margin: 24px 0; }
+  .demo-modal .demo-steps .step { display: flex; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--border); align-items: flex-start; }
+  .demo-modal .demo-steps .step:last-child { border-bottom: none; }
+  .demo-modal .step-num { background: var(--purple); color: var(--white); border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: 0.81rem; font-weight: 500; flex-shrink: 0; }
+  .demo-modal .step-text { font-size: 0.95rem; color: var(--text); line-height: 1.5; }
+  .demo-modal .step-text strong { color: var(--heading); }
+  .demo-close { position: absolute; top: 12px; right: 16px; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--slate); }
+  .demo-modal .btn { margin-top: 8px; }
+
+  /* Mobile accordion */
+  @media (max-width: 768px) {
+    .accordion-toggle { display: block; width: 100%; text-align: left; background: none; border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; font-size: 1rem; font-weight: 400; color: var(--heading); cursor: pointer; margin-bottom: 8px; }
+    .accordion-toggle::after { content: ' ▸'; float: right; transition: transform 0.2s; }
+    .accordion-toggle.open::after { content: ' ▾'; }
+    .accordion-body { display: none; padding: 0 0 16px 0; }
+    .accordion-body.open { display: block; }
+    section .grid-3, section .grid-2, section .pipeline, section .pricing-grid, section .roi-grid, section .results-grid, section .included-grid, section .contract-grid { display: none; }
+    section.expanded .grid-3, section.expanded .grid-2, section.expanded .pipeline, section.expanded .pricing-grid, section.expanded .roi-grid, section.expanded .results-grid, section.expanded .included-grid, section.expanded .contract-grid { display: grid; }
+    section .section-header { margin-bottom: 16px; }
+    section .section-header + * { display: none; }
+    section.expanded .section-header + * { display: block; }
+    section .card, section .pricing-card, section .roi-card, section .metric-card, section .included-item, section .contract-item { margin-bottom: 12px; }
+  }
 </style>
 </head>
 <body>
@@ -357,6 +386,7 @@
     <div class="ctas">
       <a href="/apply" class="btn btn-primary">See If You Qualify →</a>
       <a href="#pricing" class="btn btn-ghost">See Pricing ↓</a>
+      <button class="btn btn-ghost" onclick="openDemo()" style="cursor:pointer;">▶ Watch 30-Second Preview</button>
     </div>
     <div class="trust-bar">
       14 days from kickoff to your first agent live in production.
@@ -442,7 +472,7 @@
         <p>Our Hermes Support Agent triages every ticket 24/7 — categorizing, searching the knowledge base, and resolving known patterns automatically. Your workflows run without waiting for a human.</p>
       </div>
       <div class="card">
-        <h3>Humans Handle the Edge Cases</h3>
+        <h3>Humans Handle the Exceptions</h3>
         <p>When the AI hits something new or critical, it escalates to Garry Mangat and our support team. You get human judgment where it matters — not where a machine can handle it faster.</p>
       </div>
       <div class="card">
@@ -533,12 +563,12 @@
       <div class="grid-3" style="margin-bottom: 32px;">
         <div class="card" style="padding: 24px;">
           <h3 style="margin-bottom: 8px;">Level A — Direct API</h3>
-          <p style="font-size: 0.95rem; color: var(--text);">Real-time or near-real-time connection. Agent reads and writes via REST or GraphQL. Examples: ServiceTitan, HubSpot, QuickBooks, Google Calendar.</p>
+          <p style="font-size: 0.95rem; color: var(--text);">Real-time connection. Agent reads and writes directly to your tool. Examples: ServiceTitan, HubSpot, QuickBooks, Google Calendar.</p>
           <div style="margin-top: 12px; font-size: 0.85rem; color: var(--purple);">Latency: minutes · Reliability: 99.5%</div>
         </div>
         <div class="card" style="padding: 24px;">
-          <h3 style="margin-bottom: 8px;">Level B — Webhook</h3>
-          <p style="font-size: 0.95rem; color: var(--text);">Event-driven. Agent receives webhooks from the tool and responds immediately. Examples: Stripe, Cal.com, form submissions.</p>
+          <h3 style="margin-bottom: 8px;">Level B — Event-Driven</h3>
+          <p style="font-size: 0.95rem; color: var(--text);">Your tool sends updates to the agent automatically when something happens. Examples: Stripe payments, Cal.com bookings, form submissions.</p>
           <div style="margin-top: 12px; font-size: 0.85rem; color: var(--purple);">Latency: seconds · Reliability: 99%</div>
         </div>
         <div class="card" style="padding: 24px;">
@@ -858,6 +888,30 @@
   </div>
 </footer>
 
+<!-- Demo Preview Modal -->
+<div class="demo-overlay" id="demoOverlay" onclick="if(event.target===this)closeDemo()">
+  <div class="demo-modal">
+    <button class="demo-close" onclick="closeDemo()" aria-label="Close demo">×</button>
+    <h3>What Hermes MSP Looks Like</h3>
+    <div class="demo-steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-text"><strong>Your agents run your workflows.</strong> Lead triage, follow-ups, scheduling, dispatch — automated 24/7. You see every action in your portal.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-text"><strong>You get a delivery scorecard every month.</strong> What we promised vs. what we delivered. No black box. Full transparency.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-text"><strong>We handle the infrastructure.</strong> Hosting, model costs, security patches, bug fixes. You focus on your business — we run the AI layer.</div>
+      </div>
+    </div>
+    <p style="font-size:0.88rem;color:var(--slate);margin-bottom:16px;">Want a full live demo? Apply and we'll walk you through your actual workflows on a call.</p>
+    <a href="/apply" class="btn btn-primary">Apply for a Full Demo →</a>
+  </div>
+</div>
+
 <script>
   function toggleTheme() {
     const html = document.documentElement;
@@ -880,6 +934,31 @@
       document.documentElement.setAttribute('data-theme', 'dark');
       document.querySelector('.theme-toggle').textContent = '☀️';
     }
+  })();
+
+  // Demo modal
+  function openDemo() { document.getElementById('demoOverlay').classList.add('open'); }
+  function closeDemo() { document.getElementById('demoOverlay').classList.remove('open'); }
+  document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeDemo(); });
+
+  // Mobile accordion: collapse long sections on small screens
+  (function() {
+    if (window.innerWidth > 768) return;
+    var sections = document.querySelectorAll('section');
+    sections.forEach(function(sec) {
+      var h2 = sec.querySelector('h2');
+      if (!h2) return;
+      var header = sec.querySelector('.section-header');
+      var toggle = document.createElement('button');
+      toggle.className = 'accordion-toggle';
+      toggle.textContent = h2.textContent;
+      if (header) header.replaceWith(toggle);
+      else h2.replaceWith(toggle);
+      toggle.addEventListener('click', function() {
+        this.classList.toggle('open');
+        sec.classList.toggle('expanded');
+      });
+    });
   })();
 </script>
 

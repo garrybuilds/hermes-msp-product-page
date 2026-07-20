@@ -358,6 +358,7 @@ function renderQuestion(idx) {
       </div>`;
     }
     html += '</div>';
+    html += '<div class="field-error" id="fieldError"></div>';
   } else if (q.type === 'checkbox') {
     if (!multiSelectValues[q.id]) multiSelectValues[q.id] = new Set(answers[q.id] ? answers[q.id].split('||') : []);
     html += '<div class="option-group">';
@@ -369,6 +370,7 @@ function renderQuestion(idx) {
       </div>`;
     }
     html += '</div>';
+    html += '<div class="field-error" id="fieldError"></div>';
   }
 
   wrap.innerHTML = html;

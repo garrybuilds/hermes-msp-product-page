@@ -1,0 +1,24 @@
+# Environment files — never commit
+.env
+.env.*
+.env.local
+
+# Credentials files — never commit
+*credentials*
+*secret*
+*.key
+*.pem
+
+# OS noise
+.DS_Store
+*.swp
+*.swo
+*~
+
+# Editor temp
+.vscode/
+.idea/
+*~
+
+# Node
+node_modules/

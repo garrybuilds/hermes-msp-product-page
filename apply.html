@@ -487,6 +487,24 @@ function goBack() {
   if (currentStep <= 0) return;
   navigationLocked = false; // leaving the submit screen re-opens navigation
   const wrap = document.getElementById('questionWrap');
+  if (!wrap) {
+    // showSuccess/showAuditPath/showNotFit replaced formContainer's innerHTML —
+    // questionWrap/btnRow are gone. Rebuild the form skeleton, then render the
+    // previous question (instant restore beats the null-class TypeError that
+    // killed Escape-from-result navigation entirely).
+    const container = document.getElementById('formContainer');
+    container.innerHTML = `
+      <div class="step-info">
+        <div class="step-counter" id="stepCounter"></div>
+        <div class="step-section-label" id="sectionLabel"></div>
+      </div>
+      <div class="question-wrap" id="questionWrap"></div>
+      <div class="btn-row" id="btnRow"></div>
+    `;
+    currentStep--;
+    renderQuestion(currentStep);
+    return;
+  }
   wrap.classList.add('fade-out');
   setTimeout(() => {
     currentStep--;

@@ -393,6 +393,7 @@ function renderQuestion(idx) {
 
 // ===== NAVIGATION =====
 function goNext() {
+  if (currentStep >= questions.length) return; // double-submit guard: past the last question
   const q = questions[currentStep];
   if (q.condition && !q.condition()) { currentStep++; renderQuestion(currentStep); return; }
 
@@ -544,11 +545,14 @@ function showSuccess() {
   document.getElementById('sectionLabel').textContent = '';
   document.getElementById('btnRow').innerHTML = '';
 
+  // Neutral loading state — success is shown ONLY after the insert is confirmed
+  // (see submitToSupabase). No "You're in" here: that was a false success that
+  // ran even when the insert failed (the table's DDL didn't even exist).
   container.innerHTML = `
     <div class="result-screen">
-      <div class="result-icon">🎯</div>
-      <h2>You're in</h2>
-      <p>Based on what you've shared, you're exactly the kind of business Hermes MSP is built for.</p>
+      <div class="result-icon">⏳</div>
+      <h2>Submitting your application…</h2>
+      <p>One moment — we're saving your answers.</p>
       <p id="submitStatus" style="margin-top:16px;font-size:0.81rem;color:var(--slate);">Submitting your application…</p>
       <div id="calLink" style="display:none;">
         <p style="font-size:0.88rem;color:var(--slate);">Pick a time for your 30-minute qualification call below. Your name and email are pre-filled — just choose a time and confirm.</p>
@@ -561,7 +565,33 @@ function showSuccess() {
 }
 
 // ===== SUPABASE SUBMISSION =====
+let isSubmitting = false; // double-submit guard: one insert in flight at a time
+
+// Map the form's primary-pain question (leaking_workflow, multi-select) to the
+// 6-vector scorecard taxonomy: demand / conversion / delivery / retention /
+// support / cashflow. First selected option wins; fallbacks cover the rest.
+const CONSTRAINT_MAP = {
+  'Lead response': 'demand',
+  'Scheduling': 'delivery',
+  'Follow-up': 'conversion',
+  'CRM & admin': 'support',
+  'Reviews & referrals': 'retention',
+  'Reporting': 'support',
+  'Other': 'demand'
+};
+
+function deriveConstraintId() {
+  const selected = (answers.leaking_workflow || '').split('||').map(s => s.trim()).filter(Boolean);
+  for (const opt of selected) {
+    if (CONSTRAINT_MAP[opt]) return CONSTRAINT_MAP[opt];
+  }
+  return 'demand'; // no pain selected — default to the demand vector
+}
+
 function submitToSupabase() {
+  if (isSubmitting) return; // double-submit guard: ignore re-entry while in flight
+  isSubmitting = true;
+
   const SUPABASE_URL = 'https://zbjioabligamwmqgtxqs.supabase.co';
   const SUPABASE_ANON_KEY = 'sb_publishable_5vsR3xHV2cL8B1YVYTXkKw_XfK7e2p9';
   const statusEl = document.getElementById('submitStatus');
@@ -581,7 +611,8 @@ function submitToSupabase() {
     budget: answers.budget || '',
     tier: answers.tier || '',
     case_study: answers.case_study || '',
-    call_time: answers.call_time || ''
+    call_time: answers.call_time || '',
+    constraint_id: deriveConstraintId()
   });
 
   const blob = new Blob([body], { type: 'application/json' });
@@ -598,20 +629,26 @@ function submitToSupabase() {
     body: body,
     keepalive: true
   }).then(r => {
+    isSubmitting = false;
     if (statusEl) {
       if (r.ok) {
+        // Confirmed insert (HTTP 2xx) — only now show success + reveal Cal link
         statusEl.textContent = '✓ Application submitted';
         statusEl.style.color = 'var(--success-text)';
-        // Reveal Cal.com link ONLY on successful submission
         const calLink = document.getElementById('calLink');
         if (calLink) calLink.style.display = 'block';
       } else {
+        // Explicit error state — no success message on a failed insert
         statusEl.textContent = '⚠ Submission failed — please try again or email garry@malwaassetfirm.com';
-        statusEl.style.color = 'var(--danger-text)';
+        statusEl.style.color = '#e53e3e';
       }
     }
   }).catch(() => {
-    if (statusEl) statusEl.textContent = '⚠ Network error — please email garry@malwaassetfirm.com';
+    isSubmitting = false;
+    if (statusEl) {
+      statusEl.textContent = '⚠ Network error — please email garry@malwaassetfirm.com';
+      statusEl.style.color = '#e53e3e';
+    }
   });
 }
 

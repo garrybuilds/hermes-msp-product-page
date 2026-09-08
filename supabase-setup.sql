@@ -28,19 +28,23 @@ CREATE TABLE IF NOT EXISTS public.msp_applications (
 ALTER TABLE public.msp_applications ENABLE ROW LEVEL SECURITY;
 
 -- Allow anon inserts (the form uses the anon/publishable key — anon inserts are the point)
+DROP POLICY IF EXISTS "allow_anon_insert" ON public.msp_applications;
 CREATE POLICY "allow_anon_insert" ON public.msp_applications
   FOR INSERT TO anon
   WITH CHECK (true);
 
 -- No anon SELECT: applications stay private
+DROP POLICY IF EXISTS "block_anon_select" ON public.msp_applications;
 CREATE POLICY "block_anon_select" ON public.msp_applications
   FOR SELECT TO anon
   USING (false);
 
+DROP POLICY IF EXISTS "block_anon_update" ON public.msp_applications;
 CREATE POLICY "block_anon_update" ON public.msp_applications
   FOR UPDATE TO anon
   USING (false);
 
+DROP POLICY IF EXISTS "block_anon_delete" ON public.msp_applications;
 CREATE POLICY "block_anon_delete" ON public.msp_applications
   FOR DELETE TO anon
   USING (false);

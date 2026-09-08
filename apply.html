@@ -595,6 +595,8 @@ function submitToSupabase() {
   const SUPABASE_URL = 'https://zbjioabligamwmqgtxqs.supabase.co';
   const SUPABASE_ANON_KEY = 'sb_publishable_5vsR3xHV2cL8B1YVYTXkKw_XfK7e2p9';
   const statusEl = document.getElementById('submitStatus');
+  const retryBtn = document.getElementById('retrySubmit');
+  if (retryBtn) retryBtn.remove(); // clear any stale retry button from a previous failure
 
   const body = JSON.stringify({
     name: answers.name || '',
@@ -638,9 +640,18 @@ function submitToSupabase() {
         const calLink = document.getElementById('calLink');
         if (calLink) calLink.style.display = 'block';
       } else {
-        // Explicit error state — no success message on a failed insert
+        // Explicit error state — no success message on a failed insert.
+        // Retry re-invokes submitToSupabase with the SAME in-memory answers
+        // (nothing is reset) and re-runs the isSubmitting guard.
         statusEl.textContent = '⚠ Submission failed — please try again or email garry@malwaassetfirm.com';
         statusEl.style.color = '#e53e3e';
+        const retry = document.createElement('button');
+        retry.id = 'retrySubmit';
+        retry.className = 'btn btn-primary';
+        retry.textContent = 'Retry submit';
+        retry.style.marginTop = '16px';
+        retry.onclick = () => submitToSupabase();
+        statusEl.insertAdjacentElement('afterend', retry);
       }
     }
   }).catch(() => {
@@ -648,6 +659,13 @@ function submitToSupabase() {
     if (statusEl) {
       statusEl.textContent = '⚠ Network error — please email garry@malwaassetfirm.com';
       statusEl.style.color = '#e53e3e';
+      const retry = document.createElement('button');
+      retry.id = 'retrySubmit';
+      retry.className = 'btn btn-primary';
+      retry.textContent = 'Retry submit';
+      retry.style.marginTop = '16px';
+      retry.onclick = () => submitToSupabase();
+      statusEl.insertAdjacentElement('afterend', retry);
     }
   });
 }
@@ -677,6 +695,11 @@ function toggleTheme() {
 
 // ===== KEYBOARD =====
 document.addEventListener('keydown', (e) => {
+  // Navigation is locked while a submit is in flight: Escape/Enter during the
+  // fetch would re-render the question behind the detached submitStatus node,
+  // and the resolved promise would reset isSubmitting, letting a later Enter
+  // re-submit and create a DUPLICATE row.
+  if (isSubmitting) return;
   if (e.key === 'Enter' && document.activeElement?.tagName !== 'TEXTAREA') {
     e.preventDefault();
     goNext();

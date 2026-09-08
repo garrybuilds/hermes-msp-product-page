@@ -392,7 +392,16 @@ function renderQuestion(idx) {
 }
 
 // ===== NAVIGATION =====
+// navigationLocked closes the 250ms fade-out race: Enter/button clicks during
+// the fade re-entered goNext with currentStep not yet incremented — each hit
+// scheduled another showSuccess() timer, and the second render detached the
+// in-flight fetch's statusEl (confirmed insert never showed success) or, in a
+// narrow window, re-ran submitToSupabase after isSubmitting reset → duplicate
+// row. Latched when the LAST question advances; cleared only by goBack.
+let navigationLocked = false;
+
 function goNext() {
+  if (navigationLocked) return; // fade-out window: exactly one timer, ever
   if (currentStep >= questions.length) return; // double-submit guard: past the last question
   const q = questions[currentStep];
   if (q.condition && !q.condition()) { currentStep++; renderQuestion(currentStep); return; }
@@ -459,6 +468,11 @@ function goNext() {
   const wrap = document.getElementById('questionWrap');
   wrap.classList.add('fade-out');
 
+  // Latch at the last question: the fade window must yield exactly ONE
+  // showSuccess() → submitToSupabase() chain. Earlier questions don't latch —
+  // the user may still change their mind mid-fade and Back is harmless there.
+  if (currentStep === questions.length - 1) navigationLocked = true;
+
   setTimeout(() => {
     currentStep++;
     if (currentStep >= questions.length) {
@@ -471,6 +485,7 @@ function goNext() {
 
 function goBack() {
   if (currentStep <= 0) return;
+  navigationLocked = false; // leaving the submit screen re-opens navigation
   const wrap = document.getElementById('questionWrap');
   wrap.classList.add('fade-out');
   setTimeout(() => {
@@ -702,7 +717,7 @@ document.addEventListener('keydown', (e) => {
   if (isSubmitting) return;
   if (e.key === 'Enter' && document.activeElement?.tagName !== 'TEXTAREA') {
     e.preventDefault();
-    goNext();
+    if (!e.repeat) goNext(); // auto-repeat during the 250ms fade can't stack timers
   }
   if (e.key === 'Escape') {
     goBack();

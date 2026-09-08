@@ -392,7 +392,17 @@ function renderQuestion(idx) {
 }
 
 // ===== NAVIGATION =====
+// navigationLocked closes the 250ms fade-out race: Enter/button clicks during
+// the fade re-entered goNext with currentStep not yet incremented — each hit
+// scheduled another showSuccess() timer, and the second render detached the
+// in-flight fetch's statusEl (confirmed insert never showed success) or, in a
+// narrow window, re-ran submitToSupabase after isSubmitting reset → duplicate
+// row. Latched when the LAST question advances; cleared only by goBack.
+let navigationLocked = false;
+
 function goNext() {
+  if (navigationLocked) return; // fade-out window: exactly one timer, ever
+  if (currentStep >= questions.length) return; // double-submit guard: past the last question
   const q = questions[currentStep];
   if (q.condition && !q.condition()) { currentStep++; renderQuestion(currentStep); return; }
 
@@ -458,6 +468,11 @@ function goNext() {
   const wrap = document.getElementById('questionWrap');
   wrap.classList.add('fade-out');
 
+  // Latch at the last question: the fade window must yield exactly ONE
+  // showSuccess() → submitToSupabase() chain. Earlier questions don't latch —
+  // the user may still change their mind mid-fade and Back is harmless there.
+  if (currentStep === questions.length - 1) navigationLocked = true;
+
   setTimeout(() => {
     currentStep++;
     if (currentStep >= questions.length) {
@@ -470,7 +485,26 @@ function goNext() {
 
 function goBack() {
   if (currentStep <= 0) return;
+  navigationLocked = false; // leaving the submit screen re-opens navigation
   const wrap = document.getElementById('questionWrap');
+  if (!wrap) {
+    // showSuccess/showAuditPath/showNotFit replaced formContainer's innerHTML —
+    // questionWrap/btnRow are gone. Rebuild the form skeleton, then render the
+    // previous question (instant restore beats the null-class TypeError that
+    // killed Escape-from-result navigation entirely).
+    const container = document.getElementById('formContainer');
+    container.innerHTML = `
+      <div class="step-info">
+        <div class="step-counter" id="stepCounter"></div>
+        <div class="step-section-label" id="sectionLabel"></div>
+      </div>
+      <div class="question-wrap" id="questionWrap"></div>
+      <div class="btn-row" id="btnRow"></div>
+    `;
+    currentStep--;
+    renderQuestion(currentStep);
+    return;
+  }
   wrap.classList.add('fade-out');
   setTimeout(() => {
     currentStep--;
@@ -544,11 +578,14 @@ function showSuccess() {
   document.getElementById('sectionLabel').textContent = '';
   document.getElementById('btnRow').innerHTML = '';
 
+  // Neutral loading state — success is shown ONLY after the insert is confirmed
+  // (see submitToSupabase). No "You're in" here: that was a false success that
+  // ran even when the insert failed (the table's DDL didn't even exist).
   container.innerHTML = `
     <div class="result-screen">
-      <div class="result-icon">🎯</div>
-      <h2>You're in</h2>
-      <p>Based on what you've shared, you're exactly the kind of business Hermes MSP is built for.</p>
+      <div class="result-icon">⏳</div>
+      <h2>Submitting your application…</h2>
+      <p>One moment — we're saving your answers.</p>
       <p id="submitStatus" style="margin-top:16px;font-size:0.81rem;color:var(--slate);">Submitting your application…</p>
       <div id="calLink" style="display:none;">
         <p style="font-size:0.88rem;color:var(--slate);">Pick a time for your 30-minute qualification call below. Your name and email are pre-filled — just choose a time and confirm.</p>
@@ -561,10 +598,38 @@ function showSuccess() {
 }
 
 // ===== SUPABASE SUBMISSION =====
+let isSubmitting = false; // double-submit guard: one insert in flight at a time
+
+// Map the form's primary-pain question (leaking_workflow, multi-select) to the
+// 6-vector scorecard taxonomy: demand / conversion / delivery / retention /
+// support / cashflow. First selected option wins; fallbacks cover the rest.
+const CONSTRAINT_MAP = {
+  'Lead response': 'demand',
+  'Scheduling': 'delivery',
+  'Follow-up': 'conversion',
+  'CRM & admin': 'support',
+  'Reviews & referrals': 'retention',
+  'Reporting': 'support',
+  'Other': 'demand'
+};
+
+function deriveConstraintId() {
+  const selected = (answers.leaking_workflow || '').split('||').map(s => s.trim()).filter(Boolean);
+  for (const opt of selected) {
+    if (CONSTRAINT_MAP[opt]) return CONSTRAINT_MAP[opt];
+  }
+  return 'demand'; // no pain selected — default to the demand vector
+}
+
 function submitToSupabase() {
+  if (isSubmitting) return; // double-submit guard: ignore re-entry while in flight
+  isSubmitting = true;
+
   const SUPABASE_URL = 'https://zbjioabligamwmqgtxqs.supabase.co';
   const SUPABASE_ANON_KEY = 'sb_publishable_5vsR3xHV2cL8B1YVYTXkKw_XfK7e2p9';
   const statusEl = document.getElementById('submitStatus');
+  const retryBtn = document.getElementById('retrySubmit');
+  if (retryBtn) retryBtn.remove(); // clear any stale retry button from a previous failure
 
   const body = JSON.stringify({
     name: answers.name || '',
@@ -581,7 +646,8 @@ function submitToSupabase() {
     budget: answers.budget || '',
     tier: answers.tier || '',
     case_study: answers.case_study || '',
-    call_time: answers.call_time || ''
+    call_time: answers.call_time || '',
+    constraint_id: deriveConstraintId()
   });
 
   const blob = new Blob([body], { type: 'application/json' });
@@ -598,20 +664,42 @@ function submitToSupabase() {
     body: body,
     keepalive: true
   }).then(r => {
+    isSubmitting = false;
     if (statusEl) {
       if (r.ok) {
+        // Confirmed insert (HTTP 2xx) — only now show success + reveal Cal link
         statusEl.textContent = '✓ Application submitted';
         statusEl.style.color = 'var(--success-text)';
-        // Reveal Cal.com link ONLY on successful submission
         const calLink = document.getElementById('calLink');
         if (calLink) calLink.style.display = 'block';
       } else {
+        // Explicit error state — no success message on a failed insert.
+        // Retry re-invokes submitToSupabase with the SAME in-memory answers
+        // (nothing is reset) and re-runs the isSubmitting guard.
         statusEl.textContent = '⚠ Submission failed — please try again or email garry@malwaassetfirm.com';
-        statusEl.style.color = 'var(--danger-text)';
+        statusEl.style.color = '#e53e3e';
+        const retry = document.createElement('button');
+        retry.id = 'retrySubmit';
+        retry.className = 'btn btn-primary';
+        retry.textContent = 'Retry submit';
+        retry.style.marginTop = '16px';
+        retry.onclick = () => submitToSupabase();
+        statusEl.insertAdjacentElement('afterend', retry);
       }
     }
   }).catch(() => {
-    if (statusEl) statusEl.textContent = '⚠ Network error — please email garry@malwaassetfirm.com';
+    isSubmitting = false;
+    if (statusEl) {
+      statusEl.textContent = '⚠ Network error — please email garry@malwaassetfirm.com';
+      statusEl.style.color = '#e53e3e';
+      const retry = document.createElement('button');
+      retry.id = 'retrySubmit';
+      retry.className = 'btn btn-primary';
+      retry.textContent = 'Retry submit';
+      retry.style.marginTop = '16px';
+      retry.onclick = () => submitToSupabase();
+      statusEl.insertAdjacentElement('afterend', retry);
+    }
   });
 }
 
@@ -640,9 +728,14 @@ function toggleTheme() {
 
 // ===== KEYBOARD =====
 document.addEventListener('keydown', (e) => {
+  // Navigation is locked while a submit is in flight: Escape/Enter during the
+  // fetch would re-render the question behind the detached submitStatus node,
+  // and the resolved promise would reset isSubmitting, letting a later Enter
+  // re-submit and create a DUPLICATE row.
+  if (isSubmitting) return;
   if (e.key === 'Enter' && document.activeElement?.tagName !== 'TEXTAREA') {
     e.preventDefault();
-    goNext();
+    if (!e.repeat) goNext(); // auto-repeat during the 250ms fade can't stack timers
   }
   if (e.key === 'Escape') {
     goBack();
